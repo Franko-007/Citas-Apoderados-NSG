@@ -94,3 +94,173 @@ body {
     .sidebar { display: none; }
     .week-grid { min-width: 800px; }
 }
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  max-height: 180px;
+  overflow-y: auto;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  z-index: 1000;
+}
+
+.autocomplete-item {
+  padding: 8px 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.autocomplete-item:hover {
+  background: #003366;
+  color: #fff;
+}
+.autocomplete-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: 9999; /* 🔴 CLAVE */
+  display: none;
+}
+/* ===============================
+   ESTILO TARJETAS DE CITAS
+   =============================== */
+
+.event {
+  position: absolute;
+  left: 5px;
+  right: 5px;
+  padding: 6px 8px;
+  border-radius: 8px;
+  font-size: 12px;
+  line-height: 1.2;
+  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+}
+
+.event.asis {
+  background: #2fad4b;
+  color: #fff;
+}
+
+.event.pen {
+  background: #ffc107;
+  color: #000;
+}
+
+.event.no {
+  background: #dc3545;
+  color: #fff;
+}
+
+.ev-sala {
+  display: inline-block;
+  margin-top: 4px;
+  padding: 2px 6px;
+  background: rgba(255,255,255,0.85);
+  color: #003366;
+  border-radius: 10px;
+  font-size: 10px;
+  font-weight: bold;
+}
+/* ===============================
+   LEYENDA DE ESTADOS
+   =============================== */
+.leyenda-citas {
+  margin-top: 20px;
+  padding: 18px;
+  background: #f8f9fa;
+  border-radius: 10px;
+  border: 1px solid #ddd;
+  font-size: 16px;
+}
+
+
+.leyenda-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.leyenda-color {
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+}
+
+.leyenda-color.asis { background:#2fad4b; }
+.leyenda-color.pen  { background:#ffc107; }
+.leyenda-color.no   { background:#dc3545; }
+/* Asegurar flujo vertical en sidebar */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Leyenda debajo del filtro */
+.leyenda-citas {
+  margin-top: 20px;
+  padding-top: 18px;
+  border-top: 6px solid #ddd;
+  font-size: 20px;
+}
+/* ===============================
+   RESPONSIVE LEYENDA DE CITAS
+   =============================== */
+
+/* CELULARES */
+@media (max-width: 576px) {
+
+  .leyenda-citas {
+    font-size: 14px;
+    padding: 12px;
+    margin-top: 12px;
+  }
+
+  .leyenda-item {
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+
+  .leyenda-color {
+    width: 16px;
+    height: 16px;
+  }
+}
+
+/* TABLETS */
+@media (min-width: 577px) and (max-width: 992px) {
+
+  .leyenda-citas {
+    font-size: 15px;
+    padding: 14px;
+  }
+
+  .leyenda-color {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+/* PC / PANTALLAS GRANDES */
+@media (min-width: 993px) {
+
+  .leyenda-citas {
+    font-size: 15px;
+    padding: 14px;
+  }
+
+  .leyenda-color {
+    width: 18px;
+    height: 18px;
+  }
+}
+
