@@ -263,4 +263,27 @@ body {
     height: 18px;
   }
 }
+/* ===============================
+   FIX LEYENDA COLORES (GITHUB)
+   =============================== */
+
+.leyenda-citas .leyenda-color {
+  display: inline-block !important;
+  width: 18px !important;
+  height: 18px !important;
+  border-radius: 5px !important;
+  flex-shrink: 0;
+}
+
+.leyenda-citas .leyenda-color.asis {
+  background-color: #2fad4b !important;
+}
+
+.leyenda-citas .leyenda-color.pen {
+  background-color: #ffc107 !important;
+}
+
+.leyenda-citas .leyenda-color.no {
+  background-color: #dc3545 !important;
+}
 
