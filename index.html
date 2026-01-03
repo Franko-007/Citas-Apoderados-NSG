@@ -35,8 +35,23 @@
             <label>Filtrar por Docente</label>
             <input type="text" id="filterDocente" oninput="renderWeekView()" list="listaDocentes" placeholder="Buscar docente...">
         </div>
-    </aside>
+        <div class="leyenda-citas">
+    <div class="leyenda-item">
+        <span class="leyenda-color asis"></span>
+        <span>Asistió</span>
+    </div>
+    <div class="leyenda-item">
+        <span class="leyenda-color pen"></span>
+        <span>Pendiente</span>
+    </div>
+    <div class="leyenda-item">
+        <span class="leyenda-color no"></span>
+        <span>No asistió</span>
+    </div>
+</div>
 
+    </aside>
+    
     <main class="calendar-main">
         <div class="calendar-controls">
             <button onclick="changeWeek(-1)">« Anterior</button>
@@ -67,19 +82,40 @@
             </div>
         </div>
 
-        <div class="form-group">
-            <label>Docente</label>
-            <input id="docente" list="listaDocentes" placeholder="Nombre del docente">
+        <div class="form-group" style="position:relative;">
+  <label>Docente</label>
+  <input
+    type="text"
+    id="docente"
+    placeholder="Buscar docente..."
+    autocomplete="off"
+    oninput="filtrarDocentes()"
+  >
+  <div id="docenteList" class="autocomplete-list"></div>
+</div>
+
+
+        <!-- EMAIL DOCENTE (SOLO CUANDO TIPO = EMAIL) -->
+        <div class="form-group" id="emailDocenteContainer" style="display:none;">
+            <label>Correo del Docente</label>
+            <input type="email" id="emailDocente" placeholder="docente@liceonsg.cl">
         </div>
 
         <div class="form-row-split">
             <div class="form-group">
-                <label>Tipo de Citación</label>
-                <select id="tipoCita">
-                    <option value="Alumno">Alumno</option>
-                    <option value="Apoderado">Apoderado</option>
-                </select>
-            </div>
+    <label>Email Docentes</label>
+    <input
+        type="email"
+        id="emailDocente"
+        placeholder="docente@colegio.cl"
+        multiple
+    >
+</div>
+
+<!-- tipo oculto fijo -->
+<input type="hidden" id="tipoCita" value="Email">
+
+                
             <div class="form-group">
                 <label>Sala</label>
                 <select id="sala">
@@ -161,6 +197,21 @@
 <footer class="main-footer">
     © NSG 2026 - Derechos Reservados - Desarrollado por Franco.
 </footer>
+
+<!-- LOGICA EMAIL -->
+<script>
+function toggleEmail() {
+    const tipo = document.getElementById("tipoCita").value;
+    const emailDiv = document.getElementById("emailDocenteContainer");
+
+    if (tipo === "Email") {
+        emailDiv.style.display = "block";
+    } else {
+        emailDiv.style.display = "none";
+        document.getElementById("emailDocente").value = "";
+    }
+}
+</script>
 
 <script src="script.js"></script>
 </body>
