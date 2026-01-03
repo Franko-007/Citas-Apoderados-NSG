@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Dashboard NSG 2026</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="dashboard-style.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+
+</head>
+<body>
+
+<div class="app-container">
+    <aside class="sidebar">
+        <img src="https://i.postimg.cc/sxxwfhwK/LOGO-LBSNG-06-237x300.png" style="width:140px; display:block; margin: 0 auto 20px;">
+        <button class="btn-dashboard" onclick="location.href='index.html'">← Volver al calendario</button>
+    </aside>
+
+    <main class="main-content">
+        <h1 class="no-pdf">Panel de Control NSG 2026</h1>
+
+        <button class="btn-export no-pdf" onclick="exportarPDF()">📄 Exportar PDF</button>
+
+
+
+        <!-- KPIs -->
+        <div class="kpi-grid">
+            <div class="kpi-card navy">TOTAL <span id="totalCitas">0</span></div>
+            <div class="kpi-card green">ASISTIDAS <span id="asisCitas">0</span></div>
+            <div class="kpi-card red">INASISTIDAS <span id="noAsisCitas">0</span></div>
+            <div class="kpi-card yellow">PENDIENTES <span id="penCitas">0</span></div>
+        </div>
+
+        <!-- GRÁFICOS -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Estados de Citas</h3>
+                <canvas id="chartEstados"></canvas>
+            </div>
+
+            <div class="chart-card">
+                <h3>Citas por Docente</h3>
+                <canvas id="chartDocentes"></canvas>
+            </div>
+
+            <div class="chart-card full">
+                <h3>Citas por Día</h3>
+                <canvas id="chartDias"></canvas>
+            </div>
+        </div>
+    </main>
+</div>
+
+<footer class="dashboard-footer">
+    © NSG 2026 - Derechos Reservados - Desarrollado por Franco.
+</footer>
+
+<script src="dashboard-script.js"></script>
+</body>
+</html>

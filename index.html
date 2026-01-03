@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestión de Citas Liceo NSG</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="main-header">
+    <div class="header-content">
+        <img src="https://i.postimg.cc/sxxwfhwK/LOGO-LBSNG-06-237x300.png" class="logo-img" alt="Logo LBSNG">
+        <h1>Gestión de Citas Liceo Bicentenario NSG</h1>
+    </div>
+</header>
+
+<div class="app-container">
+    <aside class="sidebar">
+        <button class="btn-dashboard" onclick="location.href='dashboard.html'">📊 Ver Dashboard</button>
+
+        <div class="mini-calendar">
+            <div class="mini-cal-header">
+                <button onclick="changeMonth(-1)">«</button>
+                <span id="miniMonthLabel"></span>
+                <button onclick="changeMonth(1)">»</button>
+            </div>
+            <div class="mini-cal-grid-labels">
+                <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span class="sun-red">D</span>
+            </div>
+            <div id="miniCalendar" class="mini-cal-grid-days"></div>
+        </div>
+
+        <div class="filter-group">
+            <label>Filtrar por Docente</label>
+            <input type="text" id="filterDocente" oninput="renderWeekView()" list="listaDocentes" placeholder="Buscar docente...">
+        </div>
+    </aside>
+
+    <main class="calendar-main">
+        <div class="calendar-controls">
+            <button onclick="changeWeek(-1)">« Anterior</button>
+            <h2 id="weekRangeLabel">Cargando semana...</h2>
+            <button onclick="changeWeek(1)">Siguiente »</button>
+        </div>
+
+        <div class="table-container">
+            <div id="timeLabels" class="time-column"></div>
+            <div id="weekGrid" class="week-grid"></div>
+        </div>
+    </main>
+</div>
+
+<dialog id="dialog" class="modal-clean">
+    <div class="modal-body">
+        <h2 class="modal-title">Gestión de Citación</h2>
+        <input type="hidden" id="citaId">
+
+        <div class="form-row-split">
+            <div class="form-group">
+                <label>Fecha</label>
+                <input type="date" id="fecha">
+            </div>
+            <div class="form-group">
+                <label>Hora</label>
+                <input type="time" id="hora">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label>Docente</label>
+            <input id="docente" list="listaDocentes" placeholder="Nombre del docente">
+        </div>
+
+        <div class="form-row-split">
+            <div class="form-group">
+                <label>Tipo de Citación</label>
+                <select id="tipoCita">
+                    <option value="Alumno">Alumno</option>
+                    <option value="Apoderado">Apoderado</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Sala</label>
+                <select id="sala">
+                    <option value="Sala 1">Sala 1</option>
+                    <option value="Sala 2">Sala 2</option>
+                    <option value="Biblioteca">Biblioteca</option>
+                    <option value="UTP">UTP</option>
+                    <option value="Sala de Enlaces">Sala de Enlaces</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-row-split">
+            <div class="form-group">
+                <label>Nombre del Alumno</label>
+                <input id="alumno" placeholder="Ingrese Alumno">
+            </div>
+            <div class="form-group">
+                <label>Nombre del Apoderado</label>
+                <input id="apoderado" placeholder="Ingrese Apoderado">
+            </div>
+        </div>
+
+        <div class="form-row-split">
+            <div class="form-group">
+                <label>Curso</label>
+                <select id="curso">
+                    <option value="">Seleccione curso</option>
+                    <option>Pre Kinder</option>
+                    <option>Kinder A</option>
+                    <option>Kinder B</option>
+                    <option>1° Básico A</option>
+                    <option>1° Básico B</option>
+                    <option>2° Básico A</option>
+                    <option>2° Básico B</option>
+                    <option>3° Básico A</option>
+                    <option>3° Básico B</option>
+                    <option>4° Básico A</option>
+                    <option>4° Básico B</option>
+                    <option>5° Básico A</option>
+                    <option>5° Básico B</option>
+                    <option>6° Básico A</option>
+                    <option>6° Básico B</option>
+                    <option>7° Básico A</option>
+                    <option>7° Básico B</option>
+                    <option>8° Básico A</option>
+                    <option>8° Básico B</option>
+                    <option>I° Medio A</option>
+                    <option>I° Medio B</option>
+                    <option>II° Medio A</option>
+                    <option>II° Medio B</option>
+                    <option>III° Medio A</option>
+                    <option>III° Medio B</option>
+                    <option>IV° Medio A</option>
+                    <option>IV° Medio B</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Estado</label>
+                <select id="estado">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Asistió">Asistió</option>
+                    <option value="No asistió">No asistió</option>
+                    <option value="Reagendada">Reagendada</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="modal-actions-stack">
+            <button class="btn-primary-full" id="btnGuardar" onclick="guardar()">Guardar</button>
+            <button class="btn-danger-full" id="btnReagendar" onclick="reagendar()">Reagendar</button>
+            <button class="btn-secondary-full" onclick="closeDialog()">Cerrar</button>
+        </div>
+    </div>
+</dialog>
+
+<datalist id="listaDocentes"></datalist>
+
+<footer class="main-footer">
+    © NSG 2026 - Derechos Reservados - Desarrollado por Franco.
+</footer>
+
+<script src="script.js"></script>
+</body>
+</html>
