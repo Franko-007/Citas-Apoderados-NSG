@@ -1,7 +1,8 @@
+
 /*************************************************
  * CONFIGURACIÓN
  *************************************************/
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbzsTAdxSG2cQKJtAapRNsw0oWhgLhzTkC8qvdRuL32aAOGPJjEkrH2H3I0wY-Lu1ZU/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbwuT3LN8tqEy8VaHMdjsrtXlLYCFToDXZRupFqBf7F1iNL6LVBf0N4szj_EpW2Wiuo/exec";
 
 const DOCENTES_NSG = [
  "ALEXIS CORTÉS","ALLYSON RIOS","ANA OGAZ","ANDREA SALAZAR","ANDREA DONOSO",
