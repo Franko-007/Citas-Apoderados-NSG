@@ -1,3 +1,4 @@
+
 /*************************************************
  * CONFIGURACIÓN
  *************************************************/
@@ -201,11 +202,20 @@ function renderWeekView() {
         ? `Ap: ${c.apoderado}`
         : "";
 
-ev.innerHTML = `
-  <strong>${c.docente.split(" ")[0]}</strong><br>
-  <span class="ev-detalle">${detalle}</span><br>
-  <span class="ev-sala">${c.sala || "Sin sala"}</span>
+            const apellido = c.docente
+  ? c.docente.trim().split(" ").slice(-1)[0]
+  : "";
+
+            ev.innerHTML = `
+  <div class="ev-docente">${c.docente}</div>
+  <div class="ev-detalle">${detalle}</div>
+  <div class="ev-footer">
+    <span class="ev-sala">${c.sala || "Sin sala"}</span>
+    <span class="ev-time">${c.hora}</span>
+  </div>
 `;
+
+
 
 
           ev.onclick = e => {
