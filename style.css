@@ -637,3 +637,32 @@ body {
 dialog::backdrop {
   background: rgba(0,0,0,0.45);
 }
+/* ===============================
+   CENTRADO HEADER Y FOOTER
+   =============================== */
+
+/* Header */
+.main-header {
+  display: flex;
+  justify-content: center;   /* centra el contenido */
+}
+
+.header-content {
+  width: 100%;
+  max-width: 1200px;         /* ancho visual centrado */
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Footer */
+.main-footer {
+  display: flex;
+  justify-content: center;   /* centra el contenido */
+}
+
+.main-footer > * {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+}
