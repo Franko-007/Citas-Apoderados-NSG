@@ -19,271 +19,399 @@ body {
     overflow: hidden; 
 }
 
-.main-header { background: white; padding: 10px 20px; border-bottom: 3px solid var(--navy); flex-shrink: 0; }
-.header-content { display: flex; align-items: center; gap: 15px; }
+/* ================= HEADER ================= */
+.main-header {
+    background: white;
+    padding: 10px 20px;
+    border-bottom: 3px solid var(--navy);
+    flex-shrink: 0;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
 .logo-img { height: 60px; }
 
-.app-container { display: flex; flex: 1; overflow: hidden; }
-.sidebar { width: 280px; background: white; padding: 20px; border-right: 1px solid var(--border); overflow-y: auto; flex-shrink: 0; }
-.btn-dashboard { width: 100%; padding: 12px; background: var(--navy); color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-bottom: 20px; }
-
-/* ================= MINI CALENDARIO (ESTILOS CRÍTICOS) ================= */
-.mini-cal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; font-weight: bold; }
-.mini-cal-grid-labels { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-weight: bold; font-size: 12px; margin-bottom: 5px; }
-.mini-cal-grid-days { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; font-size: 11px; }
-.mini-cal-grid-days div { padding: 8px 0; cursor: pointer; border-radius: 4px; }
-.mini-cal-grid-days div:hover { background: #eee; }
-
-.sun-red, .holiday-mark { color: var(--red) !important; font-weight: bold; }
-.active-day { background: var(--navy) !important; color: white !important; }
-
-/* FILTROS */
-.filter-group { margin-top: 20px; }
-.filter-group label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 12px; }
-.filter-group input { width: 100%; padding: 8px; border: 1px solid var(--border); border-radius: 4px; }
-
-/* CALENDARIO PRINCIPAL */
-.calendar-main { flex: 1; padding: 15px; display: flex; flex-direction: column; overflow: hidden; }
-.calendar-controls { display: flex; align-items: center; justify-content: space-between; margin-bottom: 15px; }
-.calendar-controls h2 { margin: 0; font-size: 1.2rem; color: var(--navy); }
-.calendar-controls button { background: var(--navy); color: white; border: none; padding: 8px 15px; border-radius: 4px; cursor: pointer; }
-
-.table-container { display: flex; background: white; border: 1px solid var(--border); border-radius: 8px; flex: 1; overflow: auto; position: relative; }
-
-.time-column { width: 65px; background: #f8f9fa; border-right: 1px solid var(--border); flex-shrink: 0; }
-.t-spacer { height: 45px; border-bottom: 1px solid var(--border); } 
-.t-slot { height: 60px; border-bottom: 1px solid #eee; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; }
-
-.week-grid { display: flex; flex: 1; min-width: 900px; }
-.day-col { flex: 1; border-right: 1px solid #eee; position: relative; min-width: 130px; }
-
-.d-head { height: 45px; padding: 10px; background: var(--navy); color: white; text-align: center; font-weight: bold; position: sticky; top: 0; z-index: 20; display: flex; align-items: center; justify-content: center; }
-.holiday-col .d-head { background: var(--red); }
-.holiday-col { background-color: #fffafa; }
-
-.h-slot { height: 60px; border-bottom: 1px solid #eee; cursor: pointer; }
-.h-slot:hover { background-color: #f0f7ff; }
-
-/* EVENTOS */
-.event { position: absolute; left: 4px; right: 4px; border-radius: 4px; padding: 5px; color: white; font-size: 10px; z-index: 10; cursor: pointer; box-shadow: 0 2px 4px rgba(0,0,0,0.15); overflow: hidden; line-height: 1.2; }
-.event:hover { filter: brightness(1.1); }
-.event.asis { background: var(--green); border-left: 4px solid #1a6d2d; }
-.event.pen { background: var(--yellow); color: #333; border-left: 4px solid #c59600; }
-.event.no { background: var(--red); border-left: 4px solid #8b1e28; }
-
-/* ================= MODAL CLEAN ================= */
-.modal-clean { border: none; border-radius: 10px; width: 480px; padding: 0; box-shadow: 0 10px 40px rgba(0,0,0,0.25); background: white; }
-.modal-body { padding: 30px; }
-.modal-title { margin: 0 0 25px 0; font-size: 22px; font-weight: bold; color: #000; }
-
-.form-row-split { display: flex; gap: 20px; margin-bottom: 15px; }
-.form-group { flex: 1; margin-bottom: 15px; }
-.form-group label { display: block; font-weight: bold; font-size: 13px; margin-bottom: 8px; color: #333; }
-
-.modal-clean input, .modal-clean select { width: 100%; padding: 12px; border: 1px solid var(--input-border); border-radius: 6px; font-size: 14px; outline: none; background: #fff; color: #333; transition: border 0.2s; }
-.modal-clean input:focus, .modal-clean select:focus { border-color: var(--navy); box-shadow: 0 0 0 2px rgba(0, 51, 102, 0.1); }
-
-.modal-actions-stack { display: flex; flex-direction: column; gap: 12px; margin-top: 25px; }
-.btn-primary-full { background: var(--navy); color: white; border: none; padding: 14px; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; }
-.btn-danger-full { background: #d32f2f; color: white; border: none; padding: 14px; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; }
-.btn-secondary-full { background: #f1f3f4; color: #333; border: none; padding: 14px; border-radius: 6px; font-weight: bold; font-size: 16px; cursor: pointer; width: 100%; }
-
-.main-footer { background: var(--navy); color: white; text-align: center; padding: 10px; font-size: 11px; font-weight: bold; flex-shrink: 0; width: 100%; }
-
-@media (max-width: 768px) {
-    .sidebar { display: none; }
-    .week-grid { min-width: 800px; }
+/* ================= LAYOUT ================= */
+.app-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
 }
+
+/* ================= SIDEBAR ================= */
+.sidebar {
+    width: 280px;
+    background: white;
+    padding: 20px;
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.btn-dashboard {
+    width: 100%;
+    padding: 12px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-bottom: 20px;
+}
+
+/* ================= MINI CALENDARIO ================= */
+.mini-cal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+.mini-cal-grid-labels,
+.mini-cal-grid-days {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    text-align: center;
+}
+
+.mini-cal-grid-labels {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.mini-cal-grid-days {
+    font-size: 11px;
+}
+
+.mini-cal-grid-days div {
+    padding: 8px 0;
+    cursor: pointer;
+    border-radius: 4px;
+}
+
+.mini-cal-grid-days div:hover {
+    background: #eee;
+}
+
+.sun-red,
+.holiday-mark {
+    color: var(--red);
+    font-weight: bold;
+}
+
+.active-day {
+    background: var(--navy);
+    color: white;
+}
+
+/* ================= FILTROS ================= */
+.filter-group {
+    margin-top: 20px;
+}
+
+.filter-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    font-size: 12px;
+}
+
+.filter-group input {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+}
+
+/* ================= CALENDARIO PRINCIPAL ================= */
+.calendar-main {
+    flex: 1;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.calendar-controls {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 15px;
+}
+
+.calendar-controls h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: var(--navy);
+}
+
+.calendar-controls button {
+    background: var(--navy);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+/* ================= GRID ================= */
+.table-container {
+    display: flex;
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    flex: 1;
+    overflow: auto;
+    position: relative;
+}
+
+.time-column {
+    width: 65px;
+    background: #f8f9fa;
+    border-right: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.t-spacer {
+    height: 45px;
+    border-bottom: 1px solid var(--border);
+}
+
+.t-slot {
+    height: 60px;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: bold;
+}
+
+.week-grid {
+    display: flex;
+    flex: 1;
+    min-width: 900px;
+}
+
+.day-col {
+    flex: 1;
+    border-right: 1px solid #eee;
+    position: relative;
+    min-width: 130px;
+}
+
+.d-head {
+    height: 45px;
+    padding: 10px;
+    background: var(--navy);
+    color: white;
+    text-align: center;
+    font-weight: bold;
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.holiday-col .d-head {
+    background: var(--red);
+}
+
+.holiday-col {
+    background-color: #fffafa;
+}
+
+.h-slot {
+    height: 60px;
+    border-bottom: 1px solid #eee;
+    cursor: pointer;
+}
+
+.h-slot:hover {
+    background-color: #f0f7ff;
+}
+
+/* ================= EVENTOS ================= */
+.event {
+    position: absolute;
+    left: 5px;
+    right: 5px;
+    padding: 6px 8px;
+    border-radius: 8px;
+    font-size: 12px;
+    line-height: 1.2;
+    box-shadow: 0 2px 4px rgba(0,0,0,.2);
+    color: white;
+    cursor: pointer;
+}
+
+.event.asis { background: #2fad4b; }
+.event.pen  { background: #ffc107; color: #000; }
+.event.no   { background: #dc3545; }
+
+.ev-sala {
+    display: inline-block;
+    margin-top: 4px;
+    padding: 2px 6px;
+    background: rgba(255,255,255,0.85);
+    color: var(--navy);
+    border-radius: 10px;
+    font-size: 10px;
+    font-weight: bold;
+}
+
+/* ================= AUTOCOMPLETE ================= */
 .autocomplete-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  max-height: 180px;
-  overflow-y: auto;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  z-index: 1000;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    z-index: 9999;
+    display: none;
 }
 
 .autocomplete-item {
-  padding: 8px 10px;
-  cursor: pointer;
-  font-size: 14px;
+    padding: 8px 10px;
+    cursor: pointer;
+    font-size: 14px;
 }
 
 .autocomplete-item:hover {
-  background: #003366;
-  color: #fff;
-}
-.autocomplete-list {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
-  background: #fff;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  max-height: 200px;
-  overflow-y: auto;
-  z-index: 9999; /* 🔴 CLAVE */
-  display: none;
-}
-/* ===============================
-   ESTILO TARJETAS DE CITAS
-   =============================== */
-
-.event {
-  position: absolute;
-  left: 5px;
-  right: 5px;
-  padding: 6px 8px;
-  border-radius: 8px;
-  font-size: 12px;
-  line-height: 1.2;
-  box-shadow: 0 2px 4px rgba(0,0,0,.2);
+    background: var(--navy);
+    color: white;
 }
 
-.event.asis {
-  background: #2fad4b;
-  color: #fff;
-}
-
-.event.pen {
-  background: #ffc107;
-  color: #000;
-}
-
-.event.no {
-  background: #dc3545;
-  color: #fff;
-}
-
-.ev-sala {
-  display: inline-block;
-  margin-top: 4px;
-  padding: 2px 6px;
-  background: rgba(255,255,255,0.85);
-  color: #003366;
-  border-radius: 10px;
-  font-size: 10px;
-  font-weight: bold;
-}
-/* ===============================
-   LEYENDA DE ESTADOS
-   =============================== */
+/* ================= LEYENDA ================= */
 .leyenda-citas {
-  margin-top: 20px;
-  padding: 18px;
-  background: #f8f9fa;
-  border-radius: 10px;
-  border: 1px solid #ddd;
-  font-size: 16px;
+    margin-top: 20px;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 10px;
+    border: 1px solid #ddd;
 }
-
 
 .leyenda-item {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
 }
 
 .leyenda-color {
-  width: 20px;
-  height: 20px;
-  border-radius: 6px;
+    width: 18px;
+    height: 18px;
+    border-radius: 6px;
+    flex-shrink: 0;
 }
 
 .leyenda-color.asis { background:#2fad4b; }
 .leyenda-color.pen  { background:#ffc107; }
 .leyenda-color.no   { background:#dc3545; }
-/* Asegurar flujo vertical en sidebar */
-.sidebar {
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 768px) {
+    .sidebar { display: none; }
+    .week-grid { min-width: 800px; }
+}
+/* ===============================
+   CONTENIDO INTERNO DE CITAS
+   =============================== */
+
+.ev-time {
+    font-size: 10px;
+    font-weight: bold;
+    opacity: 0.9;
+    margin-bottom: 2px;
+}
+
+.ev-docente {
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+/* Ajuste automático si la cita es pequeña */
+.event {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.ev-time {
+    font-size: 10px;
+    font-weight: bold;
+    opacity: 0.9;
+    margin-bottom: 2px;
+}
+
+.ev-docente {
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    line-height: 1.2;
+}
+
+.event {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.ev-time {
+  font-size: 10px;
+  font-weight: bold;
+  opacity: 0.85;
+  margin-bottom: 2px;
+}
+
+.ev-apellido {
+  font-size: 11px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.9;
+}
+
+.ev-detalle {
+  font-size: 11px;
+  line-height: 1.2;
+}
+.ev-docente {
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1.2;
+}
+
+.ev-detalle {
+  font-size: 11px;
+  line-height: 1.2;
+  opacity: 0.95;
+}
+
+.ev-footer {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
 }
 
-/* Leyenda debajo del filtro */
-.leyenda-citas {
-  margin-top: 20px;
-  padding-top: 18px;
-  border-top: 6px solid #ddd;
-  font-size: 20px;
+.ev-time {
+  font-size: 10px;
+  font-weight: bold;
+  opacity: 0.85;
 }
-/* ===============================
-   RESPONSIVE LEYENDA DE CITAS
-   =============================== */
-
-/* CELULARES */
-@media (max-width: 576px) {
-
-  .leyenda-citas {
-    font-size: 14px;
-    padding: 12px;
-    margin-top: 12px;
-  }
-
-  .leyenda-item {
-    gap: 10px;
-    margin-bottom: 10px;
-  }
-
-  .leyenda-color {
-    width: 16px;
-    height: 16px;
-  }
-}
-
-/* TABLETS */
-@media (min-width: 577px) and (max-width: 992px) {
-
-  .leyenda-citas {
-    font-size: 15px;
-    padding: 14px;
-  }
-
-  .leyenda-color {
-    width: 18px;
-    height: 18px;
-  }
-}
-
-/* PC / PANTALLAS GRANDES */
-@media (min-width: 993px) {
-
-  .leyenda-citas {
-    font-size: 15px;
-    padding: 14px;
-  }
-
-  .leyenda-color {
-    width: 18px;
-    height: 18px;
-  }
-}
-/* ===============================
-   FIX LEYENDA COLORES (GITHUB)
-   =============================== */
-
-.leyenda-citas .leyenda-color {
-  display: inline-block !important;
-  width: 18px !important;
-  height: 18px !important;
-  border-radius: 5px !important;
-  flex-shrink: 0;
-}
-
-.leyenda-citas .leyenda-color.asis {
-  background-color: #2fad4b !important;
-}
-
-.leyenda-citas .leyenda-color.pen {
-  background-color: #ffc107 !important;
-}
-
-.leyenda-citas .leyenda-color.no {
-  background-color: #dc3545 !important;
-}
-
