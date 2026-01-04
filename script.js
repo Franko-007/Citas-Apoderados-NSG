@@ -187,7 +187,8 @@ function renderWeekView() {
         if (idx > -1) {
           let ev = document.createElement("div");
           ev.className = `event ${c.estado === "Asistió" ? "asis" : c.estado === "No asistió" ? "no" : "pen"}`;
-          ev.style.top = `${45 + idx * 60}px`;
+          ev.style.top = `${70 + idx * 80}px`;
+
 
           let texto = c.tipo === "Email" ? c.email :
                        c.tipo === "Apoderado" ? `Ap: ${c.apoderado}` :
