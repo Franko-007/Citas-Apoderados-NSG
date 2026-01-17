@@ -35,23 +35,23 @@
             <label>Filtrar por Docente</label>
             <input type="text" id="filterDocente" oninput="renderWeekView()" list="listaDocentes" placeholder="Buscar docente...">
         </div>
+        
         <div class="leyenda-citas">
-    <div class="leyenda-item">
-        <span class="leyenda-color asis"></span>
-        <span>Asistió</span>
-    </div>
-    <div class="leyenda-item">
-        <span class="leyenda-color pen"></span>
-        <span>Pendiente</span>
-    </div>
-    <div class="leyenda-item">
-        <span class="leyenda-color no"></span>
-        <span>No asistió</span>
-    </div>
-</div>
-
+            <div class="leyenda-item">
+                <span class="leyenda-color asis"></span>
+                <span>Asistió</span>
+            </div>
+            <div class="leyenda-item">
+                <span class="leyenda-color pen"></span>
+                <span>Pendiente</span>
+            </div>
+            <div class="leyenda-item">
+                <span class="leyenda-color no"></span>
+                <span>No asistió</span>
+            </div>
+        </div>
     </aside>
-    
+
     <main class="calendar-main">
         <div class="calendar-controls">
             <button onclick="changeWeek(-1)">« Anterior</button>
@@ -83,39 +83,17 @@
         </div>
 
         <div class="form-group" style="position:relative;">
-  <label>Docente</label>
-  <input
-    type="text"
-    id="docente"
-    placeholder="Buscar docente..."
-    autocomplete="off"
-    oninput="filtrarDocentes()"
-  >
-  <div id="docenteList" class="autocomplete-list"></div>
-</div>
+            <label>Docente</label>
+            <input type="text" id="docente" placeholder="Buscar docente..." autocomplete="off" oninput="filtrarDocentes()">
+            <div id="docenteList" class="autocomplete-list"></div>
+        </div>
 
-
-        <!-- EMAIL DOCENTE (SOLO CUANDO TIPO = EMAIL) -->
-        <div class="form-group" id="emailDocenteContainer" style="display:none;">
-            <label>Correo del Docente</label>
+        <div class="form-group">
+            <label>Email Docente</label>
             <input type="email" id="emailDocente" placeholder="docente@liceonsg.cl">
         </div>
 
         <div class="form-row-split">
-            <div class="form-group">
-    <label>Email Docentes</label>
-    <input
-        type="email"
-        id="emailDocente"
-        placeholder="docente@colegio.cl"
-        multiple
-    >
-</div>
-
-<!-- tipo oculto fijo -->
-<input type="hidden" id="tipoCita" value="Email">
-
-                
             <div class="form-group">
                 <label>Sala</label>
                 <select id="sala">
@@ -124,6 +102,15 @@
                     <option value="Biblioteca">Biblioteca</option>
                     <option value="UTP">UTP</option>
                     <option value="Sala de Enlaces">Sala de Enlaces</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Estado</label>
+                <select id="estado">
+                    <option value="Pendiente">Pendiente</option>
+                    <option value="Asistió">Asistió</option>
+                    <option value="No asistió">No asistió</option>
+                    <option value="Reagendada">Reagendada</option>
                 </select>
             </div>
         </div>
@@ -139,50 +126,21 @@
             </div>
         </div>
 
-        <div class="form-row-split">
-            <div class="form-group">
-                <label>Curso</label>
-                <select id="curso">
-                    <option value="">Seleccione curso</option>
-                    <option>Pre Kinder</option>
-                    <option>Kinder A</option>
-                    <option>Kinder B</option>
-                    <option>1° Básico A</option>
-                    <option>1° Básico B</option>
-                    <option>2° Básico A</option>
-                    <option>2° Básico B</option>
-                    <option>3° Básico A</option>
-                    <option>3° Básico B</option>
-                    <option>4° Básico A</option>
-                    <option>4° Básico B</option>
-                    <option>5° Básico A</option>
-                    <option>5° Básico B</option>
-                    <option>6° Básico A</option>
-                    <option>6° Básico B</option>
-                    <option>7° Básico A</option>
-                    <option>7° Básico B</option>
-                    <option>8° Básico A</option>
-                    <option>8° Básico B</option>
-                    <option>I° Medio A</option>
-                    <option>I° Medio B</option>
-                    <option>II° Medio A</option>
-                    <option>II° Medio B</option>
-                    <option>III° Medio A</option>
-                    <option>III° Medio B</option>
-                    <option>IV° Medio A</option>
-                    <option>IV° Medio B</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Estado</label>
-                <select id="estado">
-                    <option value="Pendiente">Pendiente</option>
-                    <option value="Asistió">Asistió</option>
-                    <option value="No asistió">No asistió</option>
-                    <option value="Reagendada">Reagendada</option>
-                </select>
-            </div>
+        <div class="form-group">
+            <label>Curso</label>
+            <select id="curso">
+                <option value="">Seleccione curso</option>
+                <option>Pre Kinder</option><option>Kinder A</option><option>Kinder B</option>
+                <option>1° Básico A</option><option>1° Básico B</option><option>2° Básico A</option><option>2° Básico B</option>
+                <option>3° Básico A</option><option>3° Básico B</option><option>4° Básico A</option><option>4° Básico B</option>
+                <option>5° Básico A</option><option>5° Básico B</option><option>6° Básico A</option><option>6° Básico B</option>
+                <option>7° Básico A</option><option>7° Básico B</option><option>8° Básico A</option><option>8° Básico B</option>
+                <option>I° Medio A</option><option>I° Medio B</option><option>II° Medio A</option><option>II° Medio B</option>
+                <option>III° Medio A</option><option>III° Medio B</option><option>IV° Medio A</option><option>IV° Medio B</option>
+            </select>
         </div>
+
+        <input type="hidden" id="tipoCita" value="Email">
 
         <div class="modal-actions-stack">
             <button class="btn-primary-full" id="btnGuardar" onclick="guardar()">Guardar</button>
@@ -197,21 +155,6 @@
 <footer class="main-footer">
     © NSG 2026 - Derechos Reservados - Desarrollado por Franco.
 </footer>
-
-<!-- LOGICA EMAIL -->
-<script>
-function toggleEmail() {
-    const tipo = document.getElementById("tipoCita").value;
-    const emailDiv = document.getElementById("emailDocenteContainer");
-
-    if (tipo === "Email") {
-        emailDiv.style.display = "block";
-    } else {
-        emailDiv.style.display = "none";
-        document.getElementById("emailDocente").value = "";
-    }
-}
-</script>
 
 <script src="script.js"></script>
 </body>
