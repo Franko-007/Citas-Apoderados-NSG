@@ -15,7 +15,7 @@
 <body>
 
 <div class="app-container">
-    <aside class="sidebar">
+    <aside class="sidebar no-pdf">
         <div class="sidebar-header">
             <img src="https://i.postimg.cc/sxxwfhwK/LOGO-LBSNG-06-237x300.png" alt="Logo NSG" class="sidebar-logo">
         </div>
@@ -34,10 +34,29 @@
         </div>
     </aside>
 
-    <main class="main-content">
+    <main class="main-content" id="report-container">
+        
+        <div class="pdf-only-header">
+            <div style="display: flex; align-items: center; gap: 20px;">
+                <img src="https://i.postimg.cc/sxxwfhwK/LOGO-LBSNG-06-237x300.png" alt="Insignia NSG" style="width: 70px; height: auto;">
+                <div>
+                    <h2 style="margin: 0; color: #003366; font-size: 1.5rem;">LICEO BICENTENARIO NSG</h2>
+                    <p id="pdf-titulo-reporte" style="margin: 0; color: #666; font-weight: 700; text-transform: uppercase;"></p>
+                    <small id="pdf-fecha-emision" style="color: #888;"></small>
+                </div>
+            </div>
+            <div class="confidential-tag">
+                <span>CONFIDENCIAL</span>
+            </div>
+        </div>
+
         <header class="top-header no-pdf">
             <div class="header-title">
-                <h1>Panel de Control NSG 2026</h1>
+                <h1>Panel de Control NSG 2026 
+                    <button class="btn-refresh" onclick="cargarDashboard()" title="Actualizar datos">
+                        <i class="fa-solid fa-rotate"></i>
+                    </button>
+                </h1>
                 <p class="subtitle">Visualización de métricas y gestión de citas</p>
             </div>
             
@@ -48,9 +67,51 @@
             </div>
         </header>
 
+        <section class="filters-section no-pdf">
+            <div class="filter-group">
+                <label><i class="fa-solid fa-calendar-check"></i> Mes:</label>
+                <select id="filterMes" onchange="aplicarFiltros()" class="custom-select">
+                    <option value="todos">Todos los meses</option>
+                    <option value="01">Enero</option>
+                    <option value="02">Febrero</option>
+                    <option value="03">Marzo</option>
+                    <option value="04">Abril</option>
+                    <option value="05">Mayo</option>
+                    <option value="06">Junio</option>
+                    <option value="07">Julio</option>
+                    <option value="08">Agosto</option>
+                    <option value="09">Septiembre</option>
+                    <option value="10">Octubre</option>
+                    <option value="11">Noviembre</option>
+                    <option value="12">Diciembre</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label><i class="fa-solid fa-user-tie"></i> Docente:</label>
+                <select id="filterDocente" onchange="aplicarFiltros()" class="custom-select">
+                    <option value="todos">Cargando docentes...</option>
+                </select>
+            </div>
+            <button class="btn-dashboard btn-clear" onclick="resetearFiltros()">
+                Limpiar Filtros
+            </button>
+        </section>
+
+        <div id="infoDocenteContainer" class="info-docente-container no-pdf" style="display:none; margin-bottom: 20px;">
+            <div class="info-card">
+                <i class="fa-solid fa-calendar-day"></i>
+                <div class="info-text">
+                    <span class="info-label">Citas Agendadas:</span>
+                    <span id="fechaCitaDocente" class="info-value">-</span>
+                </div>
+            </div>
+        </div>
+
+        <div id="insightsContainer" class="insights-grid no-pdf"></div>
+
         <section class="kpi-section">
             <div class="kpi-grid">
-                <div class="kpi-card navy">
+                <div class="kpi-card navy pointer" onclick="filtrarPorEstado('todos')" title="Ver todas las citas">
                     <div class="kpi-icon"><i class="fa-solid fa-clipboard-list"></i></div>
                     <div class="kpi-info">
                         <span class="kpi-label">TOTAL CITAS</span>
@@ -58,7 +119,7 @@
                     </div>
                 </div>
 
-                <div class="kpi-card green">
+                <div class="kpi-card green pointer" onclick="filtrarPorEstado('Asistió')" title="Filtrar por Asistidas">
                     <div class="kpi-icon"><i class="fa-solid fa-check-double"></i></div>
                     <div class="kpi-info">
                         <span class="kpi-label">ASISTIDAS</span>
@@ -66,15 +127,15 @@
                     </div>
                 </div>
 
-                <div class="kpi-card red">
+                <div class="kpi-card red pointer" onclick="filtrarPorEstado('No asistió')" title="Filtrar por Inasistidas">
                     <div class="kpi-icon"><i class="fa-solid fa-user-xmark"></i></div>
                     <div class="kpi-info">
-                        <span class="kpi-label">INASISTIDAS</span>
+                        <span class="kpi-label">NO ASISTIERON</span>
                         <span class="kpi-value" id="noAsisCitas">0</span>
                     </div>
                 </div>
 
-                <div class="kpi-card yellow">
+                <div class="kpi-card yellow pointer" onclick="filtrarPorEstado('Pendiente')" title="Filtrar por Pendientes">
                     <div class="kpi-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
                     <div class="kpi-info">
                         <span class="kpi-label">PENDIENTES</span>
@@ -86,7 +147,7 @@
 
         <section class="charts-section">
             <div class="charts-grid">
-                <div class="chart-card card-half">
+                <div class="chart-card">
                     <div class="chart-header">
                         <h3><i class="fa-solid fa-pie-chart"></i> Estados de Citas</h3>
                     </div>
@@ -95,7 +156,7 @@
                     </div>
                 </div>
 
-                <div class="chart-card card-half">
+                <div class="chart-card">
                     <div class="chart-header">
                         <h3><i class="fa-solid fa-user-tie"></i> Citas por Docente</h3>
                     </div>
@@ -106,11 +167,32 @@
 
                 <div class="chart-card full-width">
                     <div class="chart-header">
-                        <h3><i class="fa-solid fa-chart-area"></i> Flujo Semanal de Citas</h3>
+                        <h3><i class="fa-solid fa-chart-area"></i> Flujo Cronológico de Citas</h3>
                     </div>
                     <div class="chart-body">
                         <canvas id="chartDias"></canvas>
                     </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="table-section no-pdf-table">
+            <div class="chart-card full-width">
+                <div class="chart-header">
+                    <h3><i class="fa-solid fa-list-ul"></i> Detalle de Citas Filtradas</h3>
+                </div>
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Docente</th>
+                                <th style="text-align: center;">Estado</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyCitas"></tbody>
+                    </table>
                 </div>
             </div>
         </section>
