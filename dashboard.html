@@ -1,61 +1,125 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<title>Dashboard NSG 2026</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <title>Dashboard NSG 2026</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="dashboard-style.css">
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="dashboard-style.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 </head>
 <body>
 
 <div class="app-container">
     <aside class="sidebar">
-        <img src="https://i.postimg.cc/sxxwfhwK/LOGO-LBSNG-06-237x300.png" style="width:140px; display:block; margin: 0 auto 20px;">
-        <button class="btn-dashboard" onclick="location.href='index.html'">← Volver al calendario</button>
+        <div class="sidebar-header">
+            <img src="https://i.postimg.cc/sxxwfhwK/LOGO-LBSNG-06-237x300.png" alt="Logo NSG" class="sidebar-logo">
+        </div>
+        
+        <nav class="sidebar-nav">
+            <button class="btn-dashboard active">
+                <i class="fa-solid fa-chart-line"></i> Dashboard
+            </button>
+            <button class="btn-dashboard secondary" onclick="location.href='index.html'">
+                <i class="fa-solid fa-calendar-days"></i> Volver al calendario
+            </button>
+        </nav>
+
+        <div class="sidebar-footer">
+            <p>Versión 2.0.26</p>
+        </div>
     </aside>
 
     <main class="main-content">
-        <h1 class="no-pdf">Panel de Control NSG 2026</h1>
-
-        <button class="btn-export no-pdf" onclick="exportarPDF()">📄 Exportar PDF</button>
-
-
-
-        <!-- KPIs -->
-        <div class="kpi-grid">
-            <div class="kpi-card navy">TOTAL <span id="totalCitas">0</span></div>
-            <div class="kpi-card green">ASISTIDAS <span id="asisCitas">0</span></div>
-            <div class="kpi-card red">INASISTIDAS <span id="noAsisCitas">0</span></div>
-            <div class="kpi-card yellow">PENDIENTES <span id="penCitas">0</span></div>
-        </div>
-
-        <!-- GRÁFICOS -->
-        <div class="charts-grid">
-            <div class="chart-card">
-                <h3>Estados de Citas</h3>
-                <canvas id="chartEstados"></canvas>
+        <header class="top-header no-pdf">
+            <div class="header-title">
+                <h1>Panel de Control NSG 2026</h1>
+                <p class="subtitle">Visualización de métricas y gestión de citas</p>
             </div>
-
-            <div class="chart-card">
-                <h3>Citas por Docente</h3>
-                <canvas id="chartDocentes"></canvas>
+            
+            <div class="header-actions">
+                <button class="btn-export" onclick="exportarPDF()">
+                    <i class="fa-solid fa-file-pdf"></i> Exportar Reporte
+                </button>
             </div>
+        </header>
 
-            <div class="chart-card full">
-                <h3>Citas por Día</h3>
-                <canvas id="chartDias"></canvas>
+        <section class="kpi-section">
+            <div class="kpi-grid">
+                <div class="kpi-card navy">
+                    <div class="kpi-icon"><i class="fa-solid fa-clipboard-list"></i></div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">TOTAL CITAS</span>
+                        <span class="kpi-value" id="totalCitas">0</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card green">
+                    <div class="kpi-icon"><i class="fa-solid fa-check-double"></i></div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">ASISTIDAS</span>
+                        <span class="kpi-value" id="asisCitas">0</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card red">
+                    <div class="kpi-icon"><i class="fa-solid fa-user-xmark"></i></div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">INASISTIDAS</span>
+                        <span class="kpi-value" id="noAsisCitas">0</span>
+                    </div>
+                </div>
+
+                <div class="kpi-card yellow">
+                    <div class="kpi-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
+                    <div class="kpi-info">
+                        <span class="kpi-label">PENDIENTES</span>
+                        <span class="kpi-value" id="penCitas">0</span>
+                    </div>
+                </div>
             </div>
-        </div>
+        </section>
+
+        <section class="charts-section">
+            <div class="charts-grid">
+                <div class="chart-card card-half">
+                    <div class="chart-header">
+                        <h3><i class="fa-solid fa-pie-chart"></i> Estados de Citas</h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="chartEstados"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card card-half">
+                    <div class="chart-header">
+                        <h3><i class="fa-solid fa-user-tie"></i> Citas por Docente</h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="chartDocentes"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card full-width">
+                    <div class="chart-header">
+                        <h3><i class="fa-solid fa-chart-area"></i> Flujo Semanal de Citas</h3>
+                    </div>
+                    <div class="chart-body">
+                        <canvas id="chartDias"></canvas>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <footer class="dashboard-footer">
+            <p>© 2026 NSG - Todos los derechos reservados | Desarrollado por <strong>Franco</strong></p>
+        </footer>
     </main>
 </div>
-
-<footer class="dashboard-footer">
-    © NSG 2026 - Derechos Reservados - Desarrollado por Franco.
-</footer>
 
 <script src="dashboard-script.js"></script>
 </body>
