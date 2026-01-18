@@ -1,6 +1,6 @@
 /**
  * Dashboard NSG 2026 - Script de Gestión y Visualización
- * Desarrollado por Franco - Versión Final Optimizada (PDF Corregido)
+ * Desarrollado por Franco - Versión Optimizada para GitHub Pages
  */
 
 const SHEET_URL = "https://script.google.com/macros/s/AKfycbwgUJA1Fv973LTwxwUy8oiYxP09XSh8yV1KWEsC9NVD9rXW8R-V5RjktDX3x1kAbJI/exec";
@@ -14,10 +14,15 @@ Chart.defaults.color = "#697386";
 
 async function cargarDashboard() {
     const btnRef = document.querySelector(".btn-refresh i");
+    const selectDoc = document.getElementById("filterDocente");
+    
     if(btnRef) btnRef.classList.add("fa-spin");
+    if(selectDoc) selectDoc.innerHTML = '<option value="todos">Cargando datos...</option>';
 
     try {
         const resp = await fetch(`${SHEET_URL}?action=get`);
+        if (!resp.ok) throw new Error("Error en la respuesta de red");
+        
         const json = await resp.json();
         datosOriginales = json.datos || [];
 
@@ -26,6 +31,7 @@ async function cargarDashboard() {
 
     } catch (error) {
         console.error("Error cargando datos:", error);
+        if(selectDoc) selectDoc.innerHTML = '<option value="todos">Error al cargar</option>';
     } finally {
         if(btnRef) setTimeout(() => btnRef.classList.remove("fa-spin"), 1000);
     }
@@ -107,28 +113,36 @@ function actualizarTablaDetalle(datos) {
         let fechaLegible = cita.fecha ? new Date(cita.fecha).toLocaleDateString('es-ES', { day: '2-digit', month: '2-digit', year: 'numeric', timeZone: 'UTC' }) : "---";
         
         let badgeClass = "badge-pendiente";
-        if (cita.estado === "Asistió") badgeClass = "badge-asistio";
-        if (cita.estado === "No asistió") badgeClass = "badge-noasistio";
+        const estado = cita.estado ? cita.estado.trim() : "Pendiente";
+        
+        if (estado === "Asistió") badgeClass = "badge-asistio";
+        if (estado === "No asistió") badgeClass = "badge-noasistio";
+        if (estado === "Email" || estado === "Reagendada") badgeClass = "badge-pendiente";
 
         tr.innerHTML = `
             <td><strong>${fechaLegible}</strong></td>
             <td>${cita.hora || "---"}</td>
             <td>${cita.docente || "---"}</td>
-            <td style="text-align: center;"><span class="badge ${badgeClass}">${cita.estado || 'Pendiente'}</span></td>
+            <td style="text-align: center;"><span class="badge ${badgeClass}">${estado}</span></td>
         `;
         tbody.appendChild(tr);
     });
 }
 
 function filtrarPorEstado(estado) {
+    // Si se hace clic en "Total Citas"
     if (estado === 'todos') {
         resetearFiltros();
         return;
     }
-    const filtrados = datosOriginales.filter(c => c.estado === estado);
+    
+    // Limpiar selectores visualmente
     document.getElementById("filterMes").value = "todos";
     document.getElementById("filterDocente").value = "todos";
     document.getElementById("infoDocenteContainer").style.display = "none";
+
+    // Filtrar datos reales
+    const filtrados = datosOriginales.filter(c => c.estado && c.estado.trim() === estado);
     
     actualizarKPIs(filtrados);
     generarInsights(filtrados);
@@ -143,10 +157,11 @@ function resetearFiltros() {
 }
 
 function actualizarKPIs(citas) {
-    document.getElementById("totalCitas").innerText = citas.length;
-    document.getElementById("asisCitas").innerText = citas.filter(c => c.estado === "Asistió").length;
-    document.getElementById("noAsisCitas").innerText = citas.filter(c => c.estado === "No asistió").length;
-    document.getElementById("penCitas").innerText = citas.filter(c => c.estado === "Pendiente").length;
+    // Estas IDs deben coincidir exactamente con tu HTML
+    if(document.getElementById("totalCitas")) document.getElementById("totalCitas").innerText = citas.length;
+    if(document.getElementById("asisCitas")) document.getElementById("asisCitas").innerText = citas.filter(c => c.estado === "Asistió").length;
+    if(document.getElementById("noAsisCitas")) document.getElementById("noAsisCitas").innerText = citas.filter(c => c.estado === "No asistió").length;
+    if(document.getElementById("penCitas")) document.getElementById("penCitas").innerText = citas.filter(c => c.estado === "Pendiente" || c.estado === "Email" || c.estado === "Reagendada").length;
 }
 
 function generarInsights(citas) {
@@ -168,14 +183,18 @@ function generarInsights(citas) {
 }
 
 function procesarGraficos(citas, mesSel, docSel) {
-    const porEstado = { "Asistió": 0, "Pendiente": 0, "No asistió": 0 };
+    const porEstado = {};
     const porDocente = {};
     const porDia = {};
 
     citas.forEach(c => {
-        if(porEstado.hasOwnProperty(c.estado)) porEstado[c.estado]++;
+        // Dinamismo para estados nuevos (Email, Reagendada, etc)
+        const est = c.estado || "Pendiente";
+        porEstado[est] = (porEstado[est] || 0) + 1;
+
         const docName = c.docente ? c.docente.trim().toUpperCase() : "SIN DOCENTE";
         porDocente[docName] = (porDocente[docName] || 0) + 1;
+
         const fecha = c.fecha ? c.fecha.substring(0, 10) : "Sin fecha";
         porDia[fecha] = (porDia[fecha] || 0) + 1;
     });
@@ -188,17 +207,30 @@ function procesarGraficos(citas, mesSel, docSel) {
 function renderEstados(data) {
     const ctx = document.getElementById("chartEstados").getContext("2d");
     if (chartEstados) chartEstados.destroy();
+    
+    // Mapeo de colores para estados conocidos y genéricos
+    const colores = {
+        "Asistió": "#10b981",
+        "Pendiente": "#f59e0b",
+        "No asistió": "#ef4444",
+        "Email": "#4facfe",
+        "Reagendada": "#8b5cf6"
+    };
+
+    const labels = Object.keys(data);
+    const bgColors = labels.map(l => colores[l] || "#cbd5e1");
+
     chartEstados = new Chart(ctx, {
         type: "doughnut",
         data: {
-            labels: Object.keys(data),
+            labels: labels,
             datasets: [{
                 data: Object.values(data),
-                backgroundColor: ["#10b981", "#f59e0b", "#ef4444"],
+                backgroundColor: bgColors,
                 borderWidth: 0
             }]
         },
-        options: { responsive: true, maintainAspectRatio: false, cutout: "75%", plugins: { legend: { position: "bottom" } } }
+        options: { responsive: true, maintainAspectRatio: false, cutout: "70%", plugins: { legend: { position: "bottom" } } }
     });
 }
 
@@ -206,17 +238,15 @@ function renderDocentes(data, mesSel) {
     const ctx = document.getElementById("chartDocentes").getContext("2d");
     if (chartDocentes) chartDocentes.destroy();
 
-    let labels, datasetLabel, datasetData;
     const ordenado = Object.entries(data).sort((a, b) => b[1] - a[1]).slice(0, 8);
-    labels = ordenado.map(d => d[0].toLowerCase().replace(/\b\w/g, l => l.toUpperCase()));
-    datasetLabel = "Citas"; 
-    datasetData = ordenado.map(d => d[1]);
+    const labels = ordenado.map(d => d[0].toLowerCase().replace(/\b\w/g, l => l.toUpperCase()));
+    const datasetData = ordenado.map(d => d[1]);
 
     chartDocentes = new Chart(ctx, {
         type: "bar",
         data: {
             labels: labels,
-            datasets: [{ label: datasetLabel, data: datasetData, backgroundColor: "#003366", borderRadius: 8 }]
+            datasets: [{ label: "Citas", data: datasetData, backgroundColor: "#003366", borderRadius: 8 }]
         },
         options: { 
             indexAxis: 'y', 
@@ -241,9 +271,6 @@ function renderDias(data) {
     });
 }
 
-/**
- * CORREGIDO: Función de exportación para evitar cortes en el pie de página
- */
 function exportarPDF() {
     const contenedor = document.querySelector(".main-content");
     const selectorMes = document.getElementById("filterMes");
@@ -263,17 +290,10 @@ function exportarPDF() {
     const nombreArchivo = esMesEspecifico ? `Reporte_${nombreMes}_NSG_2026.pdf` : `Reporte_General_NSG_2026.pdf`;
 
     const opt = {
-        margin: [5, 5, 5, 5], // Márgenes más ajustados para ganar espacio
+        margin: [5, 5, 5, 5],
         filename: nombreArchivo,
         image: { type: 'jpeg', quality: 0.98 },
-        html2canvas: { 
-            scale: 1.8, // Escala ligeramente reducida para evitar desbordes
-            useCORS: true, 
-            logging: false,
-            letterRendering: true,
-            scrollX: 0,
-            scrollY: 0
-        },
+        html2canvas: { scale: 1.8, useCORS: true, letterRendering: true },
         jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
