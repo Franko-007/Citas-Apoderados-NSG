@@ -1,76 +1,17 @@
 /*************************************************
- * CONFIGURACIÓN Y BASE DE DATOS DOCENTES
+ * CONFIGURACIÓN Y VARIABLES GLOBALES
  *************************************************/
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbwuT3LN8tqEy8VaHMdjsrtXlLYCFToDXZRupFqBf7F1iNL6LVBf0N4szj_EpW2Wiuo/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbwgUJA1Fv973LTwxwUy8oiYxP09XSh8yV1KWEsC9NVD9rXW8R-V5RjktDX3x1kAbJI/exec";
 
-const DOCENTES_DATA = [
-    { nombre: "ALEXIS CORTÉS", email: "acortes@ceas.cl" },
-    { nombre: "ALLYSON RIOS", email: "allysonrios@ceas.cl" },
-    { nombre: "ANA OGAZ", email: "aogaz@ceas.cl" },
-    { nombre: "ANDREA SALAZAR", email: "asalazar@ceas.cl" },
-    { nombre: "AVIGUEY GONZALEZ", email: "agonzalez@ceas.cl" },
-    { nombre: "CAMILA GONZÁLEZ", email: "cgonzalez@ceas.cl" },
-    { nombre: "CARLA MERA", email: "cmera@ceas.cl" },
-    { nombre: "CARLOS ARAYA", email: "caraya@ceas.cl" },
-    { nombre: "CARMEN ÁLVAREZ", email: "calvarez@ceas.cl" },
-    { nombre: "CAROLINA MIRANDA", email: "cmiranda@ceas.cl" },
-    { nombre: "CAROLINA REYES", email: "creyes@ceas.cl" },
-    { nombre: "CECILIA GARCÍA", email: "cgarcia@ceas.cl" },
-    { nombre: "CLAUDIA TOLEDO", email: "ctoledo@ceas.cl" },
-    { nombre: "CONSTANZA LÓPEZ", email: "clopez@ceas.cl" },
-    { nombre: "DANIEL VITTA", email: "dvitta@ceas.cl" },
-    { nombre: "DANIELA VERA", email: "dvera@ceas.cl" },
-    { nombre: "DANIELA VALENZUELA", email: "dvalenzuela@ceas.cl" },
-    { nombre: "DEBORA GAETE", email: "dgaete@ceas.cl" },
-    { nombre: "ELIZABETH MIRANDA", email: "emiranda@ceas.cl" },
-    { nombre: "ERIKA KINDERMANN", email: "ekindermann@ceas.cl" },
-    { nombre: "FERNANDA RÍOS", email: "frios@ceas.cl" },
-    { nombre: "FRANCISCA MAUREIRA", email: "fmaureira@ceas.cl" },
-    { nombre: "FRANCISCA COFRÉ", email: "fcofre@ceas.cl" },
-    { nombre: "FRANCISCA VIZCAYA", email: "fvizcaya@ceas.cl" },
-    { nombre: "GIOVANNA ARIAS", email: "garias@ceas.cl" },
-    { nombre: "GOLDIE FARÍAS", email: "gfarias@ceas.cl" },
-    { nombre: "HERNÁN REYES", email: "hreyes@ceas.cl" },
-    { nombre: "JAVIERA ALIAGA", email: "jaliaga@ceas.cl" },
-    { nombre: "JOAQUÍN ALMUNA", email: "jalmuna@ceas.cl" },
-    { nombre: "KARIMME GUTIÉRREZ", email: "kgutierrez@ceas.cl" },
-    { nombre: "KARINA BARRIOS", email: "kbarrios@ceas.cl" },
-    { nombre: "KAROLINA RIFFO", email: "kriffo@ceas.cl" },
-    { nombre: "LEONARDO RÍOS", email: "lrios@ceas.cl" },
-    { nombre: "LORENA ARANCIBIA", email: "larancibia@ceas.cl" },
-    { nombre: "LUIS SÁNCHEZ", email: "lsanchez@ceas.cl" },
-    { nombre: "MACARENA BELTRÁN", email: "mbeltran@ceas.cl" },
-    { nombre: "MARÍA MONZÓN", email: "mmonzon@ceas.cl" },
-    { nombre: "MARÍA GONZÁLEZ", email: "mgonzalez@ceas.cl" },
-    { nombre: "MARISOL GUAJARDO", email: "mguajardo@ceas.cl" },
-    { nombre: "MATÍAS CUEVAS", email: "mcuevas@ceas.cl" },
-    { nombre: "NATALIA CARTES", email: "ncartes@ceas.cl" },
-    { nombre: "NATALY HIDALGO", email: "nhidalgo@ceas.cl" },
-    { nombre: "NICOLE BELLO", email: "nbello@ceas.cl" },
-    { nombre: "PAOLA ÁVILA", email: "pavila@ceas.cl" },
-    { nombre: "PATRICIA NÚÑEZ", email: "pnunez@ceas.cl" },
-    { nombre: "PAULINA ARGOMEDO", email: "pargomedo@ceas.cl" },
-    { nombre: "PRISCILA VALENZUELA", email: "pvalenzuela@ceas.cl" },
-    { nombre: "REINA ORTEGA", email: "rortega@ceas.cl" },
-    { nombre: "STEPHANY GUZMÁN", email: "stephanyguzman@ceas.cl" },
-    { nombre: "VÍCTOR BARRIENTOS", email: "victorbarrientos@ceas.cl" },
-    { nombre: "YADIA CERDA", email: "ycerda@ceas.cl" },
-    { nombre: "YESSENIA SÁNCHEZ", email: "ysanchez@ceas.cl" }
-];
-
+let DOCENTES_DATA = []; 
 let citas = [];
 let currentDate = new Date();
 let miniCalDate = new Date();
+
 const HORAS = ["08:00","08:30","09:00","09:30","10:00","10:30","11:00","11:30","12:00","12:30","13:00","13:30","14:00","14:30","15:00","15:30","16:00","16:30","17:00"];
 const FERIADOS_2026 = ["2026-01-01","2026-04-03","2026-05-01","2026-05-21","2026-09-18","2026-12-25"];
 
 document.addEventListener("DOMContentLoaded", () => {
-    const datalist = document.getElementById("listaDocentes");
-    if (datalist) {
-        DOCENTES_DATA.sort((a,b) => a.nombre.localeCompare(b.nombre)).forEach(d => {
-            const opt = document.createElement("option"); opt.value = d.nombre; datalist.appendChild(opt);
-        });
-    }
     const timeLabels = document.getElementById("timeLabels");
     if (timeLabels) {
         timeLabels.innerHTML = '<div class="t-spacer"></div>' + HORAS.map(h => `<div class="t-slot">${h}</div>`).join("");
@@ -78,6 +19,52 @@ document.addEventListener("DOMContentLoaded", () => {
     renderMiniCalendar();
     cargarDatos();
 });
+
+async function cargarDatos() {
+    try {
+        const r = await fetch(`${SHEET_URL}?action=get`);
+        const j = await r.json();
+        
+        if (j.docentes) {
+            DOCENTES_DATA = j.docentes.map(d => ({
+                nombre: d.nombre.toUpperCase(),
+                email: d.email
+            }));
+            actualizarDatalistDocentes();
+        }
+
+        if (j.datos) {
+            citas = j.datos.map(c => ({
+                id: c.id, 
+                fecha: normalizarFecha(c.fecha), // Aplicando corrección
+                hora: normalizarHora(c.hora),
+                docente: c.docente || "", 
+                alumno: c.alumno || "", 
+                apoderado: c.apoderado || "",
+                curso: c.curso || "", 
+                estado: c.estado || "Pendiente", 
+                tipo: c.tipo || "Email",
+                sala: c.sala || "", 
+                email: c.email || ""
+            }));
+            renderWeekView();
+        }
+    } catch (e) { 
+        console.error("Error cargando datos:", e); 
+    }
+}
+
+function actualizarDatalistDocentes() {
+    const datalist = document.getElementById("listaDocentes");
+    if (datalist) {
+        datalist.innerHTML = "";
+        DOCENTES_DATA.sort((a,b) => a.nombre.localeCompare(b.nombre)).forEach(d => {
+            const opt = document.createElement("option"); 
+            opt.value = d.nombre; 
+            datalist.appendChild(opt);
+        });
+    }
+}
 
 function filtrarDocentes() {
     const input = document.getElementById("docente");
@@ -89,55 +76,54 @@ function filtrarDocentes() {
     const norm = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
     const filtro = norm(texto);
     const resultados = DOCENTES_DATA.filter(d => norm(d.nombre).includes(filtro));
-    resultados.slice(0, 10).forEach(docente => {
-        const div = document.createElement("div");
-        div.className = "autocomplete-item"; div.textContent = docente.nombre;
-        div.onclick = () => { 
-            input.value = docente.nombre; 
-            emailInput.value = docente.email; 
-            list.innerHTML = ""; 
-            list.style.display = "none"; 
-        };
-        list.appendChild(div);
-    });
-    list.style.display = "block";
-}
-
-async function cargarDatos() {
-    try {
-        const r = await fetch(`${SHEET_URL}?action=get`);
-        const j = await r.json();
-        if (!j.datos) return;
-        citas = j.datos.map(c => ({
-            id: c.id, fecha: normalizarFecha(c.fecha), hora: normalizarHora(c.hora),
-            docente: c.docente || "", alumno: c.alumno || "", apoderado: c.apoderado || "",
-            curso: c.curso || "", estado: c.estado || "Pendiente", tipo: c.tipo || "Email",
-            sala: c.sala || "", email: c.email || ""
-        }));
-        renderWeekView();
-    } catch (e) { console.error(e); }
+    if (resultados.length > 0) {
+        resultados.slice(0, 10).forEach(docente => {
+            const div = document.createElement("div");
+            div.className = "autocomplete-item"; 
+            div.textContent = docente.nombre;
+            div.onclick = () => { 
+                input.value = docente.nombre; 
+                emailInput.value = docente.email; 
+                list.innerHTML = ""; 
+                list.style.display = "none"; 
+            };
+            list.appendChild(div);
+        });
+        list.style.display = "block";
+    }
 }
 
 function renderWeekView() {
-    const grid = document.getElementById("weekGrid"); grid.innerHTML = "";
+    const grid = document.getElementById("weekGrid"); 
+    grid.innerHTML = "";
+    
+    // CORRECCIÓN: Cálculo de inicio de semana sin desfase
     let start = new Date(currentDate);
+    start.setHours(0,0,0,0);
     let day = start.getDay();
     let diff = start.getDate() - day + (day === 0 ? -6 : 1);
     start.setDate(diff);
+    
     document.getElementById("weekRangeLabel").innerText = `Semana del ${start.toLocaleDateString("es-CL")}`;
     const filtro = document.getElementById("filterDocente").value.toUpperCase();
 
     for (let i = 0; i < 7; i++) {
-        let d = new Date(start); d.setDate(start.getDate() + i);
+        let d = new Date(start); 
+        d.setDate(start.getDate() + i);
+        d.setHours(0,0,0,0); // Forzamos hora 0 para evitar saltos
+        
         let dStr = normalizarFecha(d);
         let isHoliday = d.getDay() === 0 || FERIADOS_2026.includes(dStr);
+        
         let col = document.createElement("div");
         col.className = `day-col ${isHoliday ? "holiday-col" : ""}`;
         col.innerHTML = `<div class="d-head">${["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"][i]} ${d.getDate()}</div>`;
 
         HORAS.forEach(h => {
-            let slot = document.createElement("div"); slot.className = "h-slot";
-            slot.onclick = () => openDialog(dStr, h); col.appendChild(slot);
+            let slot = document.createElement("div"); 
+            slot.className = "h-slot";
+            slot.onclick = () => openDialog(dStr, h); 
+            col.appendChild(slot);
         });
 
         citas.forEach(c => {
@@ -147,8 +133,6 @@ function renderWeekView() {
                     let ev = document.createElement("div");
                     ev.className = `event ${c.estado === "Asistió" ? "asis" : c.estado === "No asistió" ? "no" : "pen"}`;
                     ev.style.top = `${70 + idx * 80}px`;
-                    
-                    // ESTILO IGUAL A LA IMAGEN DE LA IZQUIERDA
                     ev.innerHTML = `
                         <div class="ev-docente">${c.docente}</div>
                         <div class="ev-detalle">${c.alumno || c.apoderado || "Sin Nombre"}</div>
@@ -157,7 +141,6 @@ function renderWeekView() {
                             <span class="ev-time">${c.hora}</span>
                         </div>
                     `;
-                    
                     ev.onclick = e => { e.stopPropagation(); openDialog(dStr, c.hora, c); };
                     col.appendChild(ev);
                 }
@@ -184,14 +167,15 @@ function openDialog(f,h,c=null){
 
 function closeDialog(){ document.getElementById("dialog").close(); }
 
-async function guardar(){
+async function guardar() {
+    const btn = document.getElementById("btnGuardar");
     const p = {
         action: document.getElementById("citaId").value ? "edit" : "add",
         id: document.getElementById("citaId").value,
         fecha: document.getElementById("fecha").value,
         hora: document.getElementById("hora").value,
-        docente: document.getElementById("docente").value,
-        email: document.getElementById("emailDocente").value,
+        docente: document.getElementById("docente").value.trim().toUpperCase(),
+        email: document.getElementById("emailDocente").value.trim(),
         tipo: "Email", enviarEmail: true,
         curso: document.getElementById("curso").value,
         alumno: document.getElementById("alumno").value,
@@ -199,8 +183,32 @@ async function guardar(){
         sala: document.getElementById("sala").value,
         estado: document.getElementById("estado").value
     };
-    await fetch(`${SHEET_URL}?${new URLSearchParams(p)}`, { mode: "no-cors" });
-    setTimeout(() => location.reload(), 600);
+
+    if (!p.fecha || !p.hora || !p.docente) {
+        alert("⚠️ Por favor completa Fecha, Hora y Docente.");
+        return;
+    }
+
+    btn.disabled = true;
+    btn.innerText = "Procesando...";
+
+    try {
+        const response = await fetch(`${SHEET_URL}?${new URLSearchParams(p)}`);
+        const result = await response.json();
+        if (result.ok) {
+            alert("✅ ¡Éxito!");
+            closeDialog();
+            await cargarDatos();
+        } else {
+            alert("⚠️ " + (result.error || "Error"));
+        }
+    } catch (e) {
+        alert("Actualizando datos...");
+        location.reload();
+    } finally {
+        btn.disabled = false;
+        btn.innerText = "Guardar";
+    }
 }
 
 async function reagendar() {
@@ -211,9 +219,19 @@ async function reagendar() {
 function changeWeek(v){ currentDate.setDate(currentDate.getDate() + v*7); renderWeekView(); renderMiniCalendar(); }
 function changeMonth(v){ miniCalDate.setMonth(miniCalDate.getMonth() + v); renderMiniCalendar(); }
 
+// CORRECCIÓN: Función mejorada para evitar desfase de día
 function normalizarFecha(v){
+    if (!v) return "";
     let d = new Date(v);
+    
+    // Si es un string YYYY-MM-DD lo usamos directo para no romper la zona horaria
+    if (typeof v === "string" && v.includes("-") && v.length <= 10) {
+        return v;
+    }
+    
     if(isNaN(d.getTime())) return "";
+    
+    // Extraer componentes locales
     let year = d.getFullYear();
     let month = (d.getMonth() + 1).toString().padStart(2, '0');
     let day = d.getDate().toString().padStart(2, '0');
@@ -241,4 +259,5 @@ function renderMiniCalendar() {
         cont.appendChild(div);
     }
 }
+
 setInterval(cargarDatos, 60000);
