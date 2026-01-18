@@ -1,668 +1,456 @@
-:root { 
-    --navy: #003366; 
-    --red: #dc3545; 
-    --green: #28a745; 
-    --yellow: #ffc107; 
-    --border: #dee2e6; 
-    --input-border: #ced4da;
+:root {
+  --navy:#003366;
+  --red:#dc3545;
+  --green:#2fad4b;
+  --yellow:#ffc107;
+  --border:#dee2e6;
 }
 
-* { box-sizing: border-box; }
+/* ================= RESET ================= */
+* { box-sizing:border-box; }
 
-body { 
-    font-family: 'Segoe UI', Arial, sans-serif; 
-    margin: 0; 
-    background: #f4f7f6; 
-    display: flex; 
-    flex-direction: column; 
-    height: 100vh; 
-    overflow: hidden; 
+body {
+  font-family:'Segoe UI', Arial, sans-serif;
+  margin:0;
+  background:#f4f7f6;
+  display:flex;
+  flex-direction:column;
+  height:100vh;
+  overflow:hidden;
 }
 
 /* ================= HEADER ================= */
 .main-header {
-    background: white;
-    padding: 10px 20px;
-    border-bottom: 3px solid var(--navy);
-    flex-shrink: 0;
+  background:#fff;
+  border-bottom:3px solid var(--navy);
+  display:flex;
+  justify-content:center;
 }
 
 .header-content {
-    display: flex;
-    align-items: center;
-    gap: 15px;
+  max-width:1200px;
+  width:100%;
+  display:flex;
+  align-items:center;
+  gap:15px;
+  padding:10px 20px;
 }
 
-.logo-img { height: 60px; }
+.logo-img { height:60px; }
 
 /* ================= LAYOUT ================= */
 .app-container {
-    display: flex;
-    flex: 1;
-    overflow: hidden;
+  display:flex;
+  flex:1;
+  overflow:hidden;
 }
 
 /* ================= SIDEBAR ================= */
 .sidebar {
-    width: 280px;
-    background: white;
-    padding: 20px;
-    border-right: 1px solid var(--border);
-    overflow-y: auto;
-    flex-shrink: 0;
-    display: flex;
-    flex-direction: column;
+  width:280px;
+  background:#fff;
+  border-right:1px solid var(--border);
+  padding:20px;
+  overflow-y:auto;
+  display:flex;
+  flex-direction:column;
 }
 
 .btn-dashboard {
-    width: 100%;
-    padding: 12px;
-    background: var(--navy);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    margin-bottom: 20px;
+  padding:12px;
+  background:var(--navy);
+  color:#fff;
+  border:none;
+  border-radius:6px;
+  font-weight:700;
+  cursor:pointer;
+  margin-bottom:20px;
 }
 
 /* ================= MINI CALENDARIO ================= */
 .mini-cal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-    font-weight: bold;
+  display:flex;
+  justify-content:space-between;
+  font-weight:700;
+  margin-bottom:8px;
 }
 
 .mini-cal-grid-labels,
 .mini-cal-grid-days {
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    text-align: center;
+  display:grid;
+  grid-template-columns:repeat(7,1fr);
+  text-align:center;
 }
 
 .mini-cal-grid-labels {
-    font-size: 12px;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.mini-cal-grid-days {
-    font-size: 11px;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:4px;
 }
 
 .mini-cal-grid-days div {
-    padding: 8px 0;
-    cursor: pointer;
-    border-radius: 4px;
+  font-size:11px;
+  padding:6px 0;
+  cursor:pointer;
+  border-radius:4px;
 }
 
 .mini-cal-grid-days div:hover {
-    background: #eee;
+  background:#eee;
 }
 
 .sun-red,
 .holiday-mark {
-    color: var(--red);
-    font-weight: bold;
+  color:var(--red);
+  font-weight:700;
 }
 
-.active-day {
-    background: var(--navy);
-    color: white;
-}
-
-/* ================= FILTROS ================= */
+/* ================= FILTRO ================= */
 .filter-group {
-    margin-top: 20px;
+  margin-top:20px;
 }
 
 .filter-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    font-size: 12px;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:5px;
+  display:block;
 }
 
 .filter-group input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid var(--border);
-    border-radius: 4px;
+  width:100%;
+  padding:8px;
+  border:1px solid var(--border);
+  border-radius:4px;
 }
 
-/* ================= CALENDARIO PRINCIPAL ================= */
+/* ================= CALENDARIO ================= */
 .calendar-main {
-    flex: 1;
-    padding: 15px;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
+  flex:1;
+  padding:15px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
 }
 
 .calendar-controls {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:15px;
 }
 
 .calendar-controls h2 {
-    margin: 0;
-    font-size: 1.2rem;
-    color: var(--navy);
+  margin:0;
+  color:var(--navy);
 }
 
 .calendar-controls button {
-    background: var(--navy);
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    border-radius: 4px;
-    cursor: pointer;
+  background:var(--navy);
+  color:#fff;
+  border:none;
+  padding:8px 14px;
+  border-radius:4px;
+  cursor:pointer;
 }
 
 /* ================= GRID ================= */
 .table-container {
-    display: flex;
-    background: white;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    flex: 1;
-    overflow: auto;
-    position: relative;
+  display:flex;
+  flex:1;
+  background:#fff;
+  border:1px solid var(--border);
+  border-radius:8px;
+  overflow:auto;
 }
 
 .time-column {
-    width: 65px;
-    background: #f8f9fa;
-    border-right: 1px solid var(--border);
-    flex-shrink: 0;
+  width:80px;
+  background:#f8f9fa;
+  border-right:1px solid var(--border);
 }
 
 .t-spacer {
-    height: 45px;
-    border-bottom: 1px solid var(--border);
+  height:60px;
+  border-bottom:1px solid var(--border);
 }
 
 .t-slot {
-    height: 60px;
-    border-bottom: 1px solid #eee;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 11px;
-    font-weight: bold;
+  height:80px;
+  font-size:11px;
+  font-weight:700;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  border-bottom:1px solid #eee;
 }
 
 .week-grid {
-    display: flex;
-    flex: 1;
-    min-width: 900px;
+  display:flex;
+  min-width:1100px;
 }
 
 .day-col {
-    flex: 1;
-    border-right: 1px solid #eee;
-    position: relative;
-    min-width: 130px;
+  flex:1;
+  min-width:160px;
+  border-right:1px solid #eee;
+  position:relative;
 }
 
 .d-head {
-    height: 45px;
-    padding: 10px;
-    background: var(--navy);
-    color: white;
-    text-align: center;
-    font-weight: bold;
-    position: sticky;
-    top: 0;
-    z-index: 20;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.holiday-col .d-head {
-    background: var(--red);
-}
-
-.holiday-col {
-    background-color: #fffafa;
+  height:60px;
+  background:var(--navy);
+  color:#fff;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  position:sticky;
+  top:0;
+  z-index:10;
 }
 
 .h-slot {
-    height: 60px;
-    border-bottom: 1px solid #eee;
-    cursor: pointer;
+  height:80px;
+  border-bottom:1px solid #eee;
+  cursor:pointer;
 }
 
 .h-slot:hover {
-    background-color: #f0f7ff;
+  background:#f0f7ff;
 }
 
 /* ================= EVENTOS ================= */
 .event {
-    position: absolute;
-    left: 5px;
-    right: 5px;
-    padding: 6px 8px;
-    border-radius: 8px;
-    font-size: 12px;
-    line-height: 1.2;
-    box-shadow: 0 2px 4px rgba(0,0,0,.2);
-    color: white;
-    cursor: pointer;
+  position:absolute;
+  left:5px;
+  right:5px;
+  padding:8px;
+  border-radius:8px;
+  color:#fff;
+  font-size:12px;
+  box-shadow:0 2px 4px rgba(0,0,0,.2);
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
-.event.asis { background: #2fad4b; }
-.event.pen  { background: #ffc107; color: #000; }
-.event.no   { background: #dc3545; }
+.event.asis { background:var(--green); }
+.event.pen  { background:var(--yellow); color:#000; }
+.event.no   { background:var(--red); }
+
+.ev-docente {
+  font-weight:700;
+  font-size:12px;
+}
+
+.ev-detalle {
+  font-size:11px;
+  opacity:.95;
+}
+
+.ev-footer {
+  display:flex;
+  justify-content:space-between;
+  margin-top:4px;
+}
 
 .ev-sala {
-    display: inline-block;
-    margin-top: 4px;
-    padding: 2px 6px;
-    background: rgba(255,255,255,0.85);
-    color: var(--navy);
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: bold;
+  background:rgba(255,255,255,.85);
+  color:var(--navy);
+  font-size:10px;
+  padding:2px 6px;
+  border-radius:10px;
+  font-weight:700;
+}
+
+.ev-time {
+  font-size:10px;
+  font-weight:700;
 }
 
 /* ================= AUTOCOMPLETE ================= */
 .autocomplete-list {
-    position: absolute;
-    top: 100%;
-    left: 0;
-    right: 0;
-    max-height: 200px;
-    overflow-y: auto;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    z-index: 9999;
-    display: none;
+  position:absolute;
+  top:100%;
+  left:0;
+  right:0;
+  background:#fff;
+  border:1px solid #ccc;
+  border-radius:6px;
+  max-height:200px;
+  overflow-y:auto;
+  z-index:9999;
+  display:none;
 }
 
 .autocomplete-item {
-    padding: 8px 10px;
-    cursor: pointer;
-    font-size: 14px;
+  padding:8px;
+  cursor:pointer;
 }
 
 .autocomplete-item:hover {
-    background: var(--navy);
-    color: white;
+  background:var(--navy);
+  color:#fff;
 }
 
 /* ================= LEYENDA ================= */
 .leyenda-citas {
-    margin-top: 20px;
-    padding: 16px;
-    background: #f8f9fa;
-    border-radius: 10px;
-    border: 1px solid #ddd;
+  margin-top:20px;
+  background:#f8f9fa;
+  border:1px solid #ddd;
+  border-radius:10px;
+  padding:16px;
 }
 
 .leyenda-item {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    margin-bottom: 10px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  margin-bottom:10px;
 }
 
 .leyenda-color {
-    width: 18px;
-    height: 18px;
-    border-radius: 6px;
-    flex-shrink: 0;
+  width:18px;
+  height:18px;
+  border-radius:6px;
 }
 
-.leyenda-color.asis { background:#2fad4b; }
-.leyenda-color.pen  { background:#ffc107; }
-.leyenda-color.no   { background:#dc3545; }
+.leyenda-color.asis { background:var(--green); }
+.leyenda-color.pen  { background:var(--yellow); }
+.leyenda-color.no   { background:var(--red); }
 
-/* ================= RESPONSIVE ================= */
-@media (max-width: 768px) {
-    .sidebar { display: none; }
-    .week-grid { min-width: 800px; }
-}
-/* ===============================
-   CONTENIDO INTERNO DE CITAS
-   =============================== */
-
-.ev-time {
-    font-size: 10px;
-    font-weight: bold;
-    opacity: 0.9;
-    margin-bottom: 2px;
-}
-
-.ev-docente {
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    line-height: 1.2;
-}
-
-/* Ajuste automático si la cita es pequeña */
-.event {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.ev-time {
-    font-size: 10px;
-    font-weight: bold;
-    opacity: 0.9;
-    margin-bottom: 2px;
-}
-
-.ev-docente {
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    line-height: 1.2;
-}
-
-.event {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-}
-.ev-time {
-  font-size: 10px;
-  font-weight: bold;
-  opacity: 0.85;
-  margin-bottom: 2px;
-}
-
-.ev-apellido {
-  font-size: 11px;
-  font-weight: bold;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  opacity: 0.9;
-}
-
-.ev-detalle {
-  font-size: 11px;
-  line-height: 1.2;
-}
-.ev-docente {
-  font-size: 12px;
-  font-weight: bold;
-  line-height: 1.2;
-}
-
-.ev-detalle {
-  font-size: 11px;
-  line-height: 1.2;
-  opacity: 0.95;
-}
-
-.ev-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 4px;
-}
-
-.ev-time {
-  font-size: 10px;
-  font-weight: bold;
-  opacity: 0.85;
-}
-/* ===============================
-   GRID CALENDARIO MÁS GRANDE
-   =============================== */
-
-/* Altura del encabezado de cada día */
-.d-head {
-  height: 60px;
-  font-size: 14px;
-}
-
-/* Columna de horas */
-.time-column {
-  width: 80px;
-}
-
-/* Cada bloque horario */
-.t-slot,
-.h-slot {
-  height: 80px; /* antes 60px */
-}
-
-/* Espaciador superior */
-.t-spacer {
-  height: 60px;
-}
-
-/* Ancho mínimo por día */
-.day-col {
-  min-width: 160px;
-}
-
-/* Grid general */
-.week-grid {
-  min-width: 1100px;
-}
-/* ===============================
-   MODAL – PALETA Y ESTILO INSTITUCIONAL
-   =============================== */
-
+/* ================= MODAL ================= */
 .modal-clean {
-  background: #ffffff;
-  border-radius: 14px;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.35);
+  border:none;
+  border-radius:16px;
+  box-shadow:0 20px 50px rgba(0,0,0,.35);
 }
 
-/* Título */
-.modal-title {
-  color: #000;
-  font-weight: 700;
-  font-size: 22px;
-}
-
-/* Labels */
-.modal-clean label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #000;
-}
-
-/* Inputs */
-.modal-clean input,
-.modal-clean select {
-  border-radius: 6px;
-  border: 1px solid #cfd6df;
-  padding: 10px 12px;
-  font-size: 14px;
-}
-
-/* Focus azul */
-.modal-clean input:focus,
-.modal-clean select:focus {
-  border-color: #1f3cff;
-  box-shadow: 0 0 0 2px rgba(31,60,255,0.15);
-}
-
-/* ===============================
-   BOTONES
-   =============================== */
-
-/* Guardar */
-.btn-primary-full {
-  background: #0b3c74; /* azul institucional */
-  color: #fff;
-  border-radius: 6px;
-  font-weight: 600;
-}
-
-.btn-primary-full:hover {
-  filter: brightness(1.05);
-}
-
-/* Eliminar */
-.btn-danger-full {
-  background: #d32f2f;
-  color: #fff;
-  border-radius: 6px;
-  font-weight: 600;
-}
-
-/* Cerrar */
-.btn-secondary-full {
-  background: #f0f0f0;
-  color: #000;
-  border-radius: 6px;
-  font-weight: 500;
-}
-
-/* Separación visual entre botones */
-.modal-actions-stack button {
-  height: 44px;
-}
-/* =========================================
-   MODAL – IGUAL AL DISEÑO REFERENCIA
-   ========================================= */
-
-/* Fondo y contenedor */
-.modal-clean {
-  background: #fff;
-  border-radius: 16px;
-  border: none;
-  box-shadow: 0 20px 50px rgba(0,0,0,0.35);
-  padding: 0;
-}
-
-/* Cuerpo */
 .modal-body {
-  padding: 28px 26px;
+  padding:28px;
 }
 
-/* Título */
 .modal-title {
-  font-size: 22px;
-  font-weight: 700;
-  color: #000;
-  margin-bottom: 20px;
+  font-size:22px;
+  font-weight:700;
+  margin-bottom:20px;
 }
 
-/* Labels */
-.modal-clean label {
-  font-size: 13px;
-  font-weight: 600;
-  color: #000;
-  margin-bottom: 6px;
+.form-row-split {
+  display:flex;
+  gap:14px;
 }
 
-/* Inputs y selects */
 .modal-clean input,
 .modal-clean select {
-  width: 100%;
-  height: 40px;
-  padding: 8px 12px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: 1px solid #cfd6df;
-  background: #fff;
+  width:100%;
+  height:40px;
+  border-radius:6px;
+  border:1px solid #cfd6df;
+  padding:8px 12px;
 }
 
-/* Focus azul como imagen */
 .modal-clean input:focus,
 .modal-clean select:focus {
-  border-color: #3f51ff;
-  box-shadow: 0 0 0 2px rgba(63,81,255,0.15);
-  outline: none;
+  border-color:#3f51ff;
+  box-shadow:0 0 0 2px rgba(63,81,255,.15);
+  outline:none;
 }
-
-/* Fecha + hora en línea */
-.form-row-split {
-  display: flex;
-  gap: 14px;
-}
-
-/* =========================
-   BOTONES (ORDEN Y COLORES)
-   ========================= */
 
 .modal-actions-stack {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-  margin-top: 24px;
+  display:flex;
+  flex-direction:column;
+  gap:12px;
+  margin-top:24px;
 }
 
-/* Guardar */
 .btn-primary-full {
-  background: #003366;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 6px;
-  height: 44px;
+  background:var(--navy);
+  color:#fff;
+  height:44px;
+  border-radius:6px;
+  font-weight:600;
+  border:none;
 }
 
-/* Eliminar */
 .btn-danger-full {
-  background: #d32f2f;
-  color: #fff;
-  font-weight: 600;
-  border-radius: 6px;
-  height: 44px;
+  background:#d32f2f;
+  color:#fff;
+  height:44px;
+  border-radius:6px;
+  border:none;
 }
 
-/* Cerrar */
 .btn-secondary-full {
-  background: #f1f1f1;
-  color: #000;
-  font-weight: 500;
-  border-radius: 6px;
-  height: 44px;
+  background:#f1f1f1;
+  color:#000;
+  height:44px;
+  border-radius:6px;
+  border:none;
 }
 
-/* Hover suave */
-.modal-actions-stack button:hover {
-  filter: brightness(1.05);
-}
-
-/* =========================
-   LIMPIEZA VISUAL
-   ========================= */
-
-/* Quitar bordes externos raros */
-dialog::backdrop {
-  background: rgba(0,0,0,0.45);
-}
-/* ===============================
-   CENTRADO HEADER Y FOOTER
-   =============================== */
-
-/* Header */
-.main-header {
-  display: flex;
-  justify-content: center;   /* centra el contenido */
-}
-
-.header-content {
-  width: 100%;
-  max-width: 1200px;         /* ancho visual centrado */
-  display: flex;
-  align-items: center;
-  gap: 15px;
-}
-
-/* Footer */
+/* ================= FOOTER ================= */
 .main-footer {
-  display: flex;
-  justify-content: center;   /* centra el contenido */
+  display:flex;
+  justify-content:center;
+  background:#fff;
+  border-top:1px solid var(--border);
+  padding:10px;
+  font-size:13px;
 }
 
-.main-footer > * {
-  max-width: 1200px;
-  width: 100%;
-  text-align: center;
+/* ================= RESPONSIVE ================= */
+@media (max-width:768px) {
+  .sidebar { display:none; }
+}
+.holiday-col {
+    background-color: #f53636 !important; /* Gris claro para feriados */
+}
+/* Si prefieres que se vea rojo suave como los domingos festivos */
+.holiday-col .d-head {
+    color: #d93025 !important;
+}
+/* 1. Hacer que el contenedor ocupe el 100% de la pantalla */
+.app-container {
+    display: flex;
+    width: 100%;
+    max-width: 100vw; /* Asegura que use todo el ancho de la ventana */
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.calendar-main {
+    flex-grow: 1; /* Esto obliga al calendario a expandirse */
+    width: 100%;
+}
+
+.week-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr); /* Divide en 7 columnas iguales */
+    width: 100%;
+    min-height: 800px; /* Asegura una altura mínima */
+}
+
+/* 2. Corregir el color del feriado para que cubra todo */
+.holiday-col {
+    background-color: #ff4d4d !important; /* El rojo de tu imagen */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Forzar que las celdas dentro del feriado sean transparentes para ver el fondo rojo */
+.holiday-col .h-slot {
+    background-color: transparent !important;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    flex-grow: 1; /* Ayuda a que las celdas llenen el espacio vertical */
+    min-height: 60px; /* Ajusta esto a la altura de tus filas */
+}
+
+/* Estilo del encabezado en feriados */
+.holiday-col .d-head {
+    background-color: #b30000 !important;
+    color: white !important;
 }
