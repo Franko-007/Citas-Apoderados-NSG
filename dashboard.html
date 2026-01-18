@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Dashboard NSG 2026</title>
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
@@ -24,7 +25,7 @@
             <button class="btn-dashboard active">
                 <i class="fa-solid fa-chart-line"></i> Dashboard
             </button>
-            <button class="btn-dashboard secondary" onclick="location.href='index.html'">
+            <button class="btn-dashboard secondary" onclick="window.location.href='index.html'">
                 <i class="fa-solid fa-calendar-days"></i> Volver al calendario
             </button>
         </nav>
@@ -61,7 +62,7 @@
             </div>
             
             <div class="header-actions">
-                <button class="btn-export" onclick="exportarPDF()">
+                <button class="btn-export" onclick="exportarPDF()" style="background: var(--primary-color); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-weight: 600;">
                     <i class="fa-solid fa-file-pdf"></i> Exportar Reporte
                 </button>
             </div>
@@ -111,7 +112,7 @@
 
         <section class="kpi-section">
             <div class="kpi-grid">
-                <div class="kpi-card navy pointer" onclick="filtrarPorEstado('todos')" title="Ver todas las citas">
+                <div class="kpi-card navy" onclick="filtrarPorEstado('todos')" style="cursor:pointer;">
                     <div class="kpi-icon"><i class="fa-solid fa-clipboard-list"></i></div>
                     <div class="kpi-info">
                         <span class="kpi-label">TOTAL CITAS</span>
@@ -119,7 +120,7 @@
                     </div>
                 </div>
 
-                <div class="kpi-card green pointer" onclick="filtrarPorEstado('Asistió')" title="Filtrar por Asistidas">
+                <div class="kpi-card green" onclick="filtrarPorEstado('Asistió')" style="cursor:pointer;">
                     <div class="kpi-icon"><i class="fa-solid fa-check-double"></i></div>
                     <div class="kpi-info">
                         <span class="kpi-label">ASISTIDAS</span>
@@ -127,7 +128,7 @@
                     </div>
                 </div>
 
-                <div class="kpi-card red pointer" onclick="filtrarPorEstado('No asistió')" title="Filtrar por Inasistidas">
+                <div class="kpi-card red" onclick="filtrarPorEstado('No asistió')" style="cursor:pointer;">
                     <div class="kpi-icon"><i class="fa-solid fa-user-xmark"></i></div>
                     <div class="kpi-info">
                         <span class="kpi-label">NO ASISTIERON</span>
@@ -135,7 +136,7 @@
                     </div>
                 </div>
 
-                <div class="kpi-card yellow pointer" onclick="filtrarPorEstado('Pendiente')" title="Filtrar por Pendientes">
+                <div class="kpi-card yellow" onclick="filtrarPorEstado('Pendiente')" style="cursor:pointer;">
                     <div class="kpi-icon"><i class="fa-solid fa-clock-rotate-left"></i></div>
                     <div class="kpi-info">
                         <span class="kpi-label">PENDIENTES</span>
@@ -151,7 +152,7 @@
                     <div class="chart-header">
                         <h3><i class="fa-solid fa-pie-chart"></i> Estados de Citas</h3>
                     </div>
-                    <div class="chart-body">
+                    <div class="chart-body" style="height: 300px; position: relative;">
                         <canvas id="chartEstados"></canvas>
                     </div>
                 </div>
@@ -160,7 +161,7 @@
                     <div class="chart-header">
                         <h3><i class="fa-solid fa-user-tie"></i> Citas por Docente</h3>
                     </div>
-                    <div class="chart-body">
+                    <div class="chart-body" style="height: 300px; position: relative;">
                         <canvas id="chartDocentes"></canvas>
                     </div>
                 </div>
@@ -169,7 +170,7 @@
                     <div class="chart-header">
                         <h3><i class="fa-solid fa-chart-area"></i> Flujo Cronológico de Citas</h3>
                     </div>
-                    <div class="chart-body">
+                    <div class="chart-body" style="height: 300px; position: relative;">
                         <canvas id="chartDias"></canvas>
                     </div>
                 </div>
@@ -181,9 +182,9 @@
                 <div class="chart-header">
                     <h3><i class="fa-solid fa-list-ul"></i> Detalle de Citas Filtradas</h3>
                 </div>
-                <div class="table-container">
+                <div class="table-container" style="max-height: 400px; overflow-y: auto;">
                     <table>
-                        <thead>
+                        <thead style="position: sticky; top: 0; background: white; z-index: 1;">
                             <tr>
                                 <th>Fecha</th>
                                 <th>Hora</th>
@@ -191,7 +192,8 @@
                                 <th style="text-align: center;">Estado</th>
                             </tr>
                         </thead>
-                        <tbody id="tbodyCitas"></tbody>
+                        <tbody id="tbodyCitas">
+                            </tbody>
                     </table>
                 </div>
             </div>
