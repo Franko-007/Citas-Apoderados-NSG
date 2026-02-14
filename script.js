@@ -1,7 +1,17 @@
 /*************************************************
+ * PROTECCIÓN ANTI-DUPLICACIÓN
+ *************************************************/
+if (window.sistemaYaCargado) {
+    console.warn("⚠️ Sistema ya estaba cargado, previniendo duplicación");
+    throw new Error("Previniendo carga duplicada del sistema");
+}
+window.sistemaYaCargado = true;
+console.log("✅ Sistema de Gestión de Citas cargando correctamente");
+
+/*************************************************
  * CONFIGURACIÓN Y VARIABLES GLOBALES
  *************************************************/
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbwgUJA1Fv973LTwxwUy8oiYxP09XSh8yV1KWEsC9NVD9rXW8R-V5RjktDX3x1kAbJI/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbxWyTc8gn6x2shP2qcpik527PWH4r5_C_xDE9AQOXjHmA0BZ3gkhUQLZwWb-Xjj8cQ/exec";
 
 let DOCENTES_DATA = []; 
 let citas = [];
@@ -34,19 +44,41 @@ async function cargarDatos() {
         }
 
         if (j.datos) {
-            citas = j.datos.map(c => ({
-                id: c.id, 
-                fecha: normalizarFecha(c.fecha), // Aplicando corrección
-                hora: normalizarHora(c.hora),
-                docente: c.docente || "", 
-                alumno: c.alumno || "", 
-                apoderado: c.apoderado || "",
-                curso: c.curso || "", 
-                estado: c.estado || "Pendiente", 
-                tipo: c.tipo || "Email",
-                sala: c.sala || "", 
-                email: c.email || ""
-            }));
+            citas = j.datos.map(c => {
+                // Normalizar estado para asegurar consistencia
+                let estadoNormalizado = "Pendiente";
+                if (c.estado) {
+                    const estadoStr = c.estado.toString().trim();
+                    if (estadoStr === "Asistió") {
+                        estadoNormalizado = "Asistió";
+                    } else if (estadoStr === "No asistió") {
+                        estadoNormalizado = "No asistió";
+                    } else if (estadoStr === "Reagendada") {
+                        estadoNormalizado = "Reagendada";
+                    } else if (estadoStr === "Pendiente" || estadoStr === "Email") {
+                        estadoNormalizado = "Pendiente";
+                    }
+                }
+                
+                const citaNormalizada = {
+                    id: c.id, 
+                    fecha: normalizarFecha(c.fecha),
+                    hora: normalizarHora(c.hora),
+                    docente: c.docente || "", 
+                    alumno: c.alumno || "", 
+                    apoderado: c.apoderado || "",
+                    curso: c.curso || "", 
+                    estado: estadoNormalizado,
+                    tipo: c.tipo || "Email",
+                    sala: c.sala || "", 
+                    email: c.email || ""
+                };
+                
+                // Log para depuración (se puede comentar después)
+                console.log(`Cita cargada: ${citaNormalizada.fecha} - Estado: ${citaNormalizada.estado}`);
+                
+                return citaNormalizada;
+            });
             renderWeekView();
         }
     } catch (e) { 
@@ -97,27 +129,29 @@ function renderWeekView() {
     const grid = document.getElementById("weekGrid"); 
     grid.innerHTML = "";
     
-    // CORRECCIÓN: Cálculo de inicio de semana sin desfase
-    let start = new Date(currentDate);
-    start.setHours(0,0,0,0);
-    let day = start.getDay();
-    let diff = start.getDate() - day + (day === 0 ? -6 : 1);
-    start.setDate(diff);
+    // CORRECCIÓN MEJORADA: Cálculo de inicio de semana usando UTC para evitar desfases
+    let start = new Date(Date.UTC(currentDate.getFullYear(), currentDate.getMonth(), currentDate.getDate()));
+    let day = start.getUTCDay();
+    let diff = start.getUTCDate() - day + (day === 0 ? -6 : 1);
+    start.setUTCDate(diff);
     
     document.getElementById("weekRangeLabel").innerText = `Semana del ${start.toLocaleDateString("es-CL")}`;
     const filtro = document.getElementById("filterDocente").value.toUpperCase();
 
     for (let i = 0; i < 7; i++) {
-        let d = new Date(start); 
-        d.setDate(start.getDate() + i);
-        d.setHours(0,0,0,0); // Forzamos hora 0 para evitar saltos
+        let d = new Date(Date.UTC(start.getUTCFullYear(), start.getUTCMonth(), start.getUTCDate() + i));
         
-        let dStr = normalizarFecha(d);
-        let isHoliday = d.getDay() === 0 || FERIADOS_2026.includes(dStr);
+        // Formatear fecha usando UTC
+        let year = d.getUTCFullYear();
+        let month = (d.getUTCMonth() + 1).toString().padStart(2, '0');
+        let dayNum = d.getUTCDate().toString().padStart(2, '0');
+        let dStr = `${year}-${month}-${dayNum}`;
+        
+        let isHoliday = d.getUTCDay() === 0 || FERIADOS_2026.includes(dStr);
         
         let col = document.createElement("div");
         col.className = `day-col ${isHoliday ? "holiday-col" : ""}`;
-        col.innerHTML = `<div class="d-head">${["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"][i]} ${d.getDate()}</div>`;
+        col.innerHTML = `<div class="d-head">${["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"][i]} ${d.getUTCDate()}</div>`;
 
         HORAS.forEach(h => {
             let slot = document.createElement("div"); 
@@ -131,7 +165,23 @@ function renderWeekView() {
                 let idx = HORAS.indexOf(c.hora);
                 if (idx > -1) {
                     let ev = document.createElement("div");
-                    ev.className = `event ${c.estado === "Asistió" ? "asis" : c.estado === "No asistió" ? "no" : "pen"}`;
+                    
+                    // CORRECCIÓN: Asignar clase correcta según el estado exacto
+                    let claseEstado = "pen"; // Por defecto pendiente
+                    const estadoNormalizado = c.estado ? c.estado.trim() : "Pendiente";
+                    
+                    if (estadoNormalizado === "Asistió") {
+                        claseEstado = "asis";
+                    } else if (estadoNormalizado === "No asistió") {
+                        claseEstado = "no";
+                    } else if (estadoNormalizado === "Reagendada") {
+                        claseEstado = "reagendada";
+                    } else {
+                        // Email y Pendiente se muestran como pendiente (amarillo)
+                        claseEstado = "pen";
+                    }
+                    
+                    ev.className = `event ${claseEstado}`;
                     ev.style.top = `${70 + idx * 80}px`;
                     ev.innerHTML = `
                         <div class="ev-docente">${c.docente}</div>
@@ -152,7 +202,12 @@ function renderWeekView() {
 
 function openDialog(f,h,c=null){
     document.getElementById("dialog").showModal();
-    document.getElementById("citaId").value = c ? c.id : "";
+    
+    const citaId = c ? c.id : "";
+    console.log("Abriendo diálogo - ID de cita:", citaId);
+    console.log("Datos de cita completos:", c);
+    
+    document.getElementById("citaId").value = citaId;
     document.getElementById("fecha").value = f;
     document.getElementById("hora").value = h;
     document.getElementById("docente").value = c ? c.docente : "";
@@ -160,51 +215,97 @@ function openDialog(f,h,c=null){
     document.getElementById("curso").value = c ? c.curso : "";
     document.getElementById("alumno").value = c ? c.alumno : "";
     document.getElementById("apoderado").value = c ? c.apoderado : "";
+    document.getElementById("emailApoderado").value = c ? (c.emailapod || "") : "";
     document.getElementById("estado").value = c ? c.estado : "Pendiente";
     document.getElementById("sala").value = c ? c.sala : "Sala 1";
     document.getElementById("btnReagendar").style.display = c ? "block" : "none";
+    
+    console.log("Estado cargado en el formulario:", document.getElementById("estado").value);
+    console.log("Email apoderado cargado:", document.getElementById("emailApoderado").value);
 }
 
 function closeDialog(){ document.getElementById("dialog").close(); }
 
 async function guardar() {
     const btn = document.getElementById("btnGuardar");
-    const p = {
-        action: document.getElementById("citaId").value ? "edit" : "add",
-        id: document.getElementById("citaId").value,
-        fecha: document.getElementById("fecha").value,
-        hora: document.getElementById("hora").value,
-        docente: document.getElementById("docente").value.trim().toUpperCase(),
-        email: document.getElementById("emailDocente").value.trim(),
-        tipo: "Email", enviarEmail: true,
-        curso: document.getElementById("curso").value,
-        alumno: document.getElementById("alumno").value,
-        apoderado: document.getElementById("apoderado").value,
-        sala: document.getElementById("sala").value,
-        estado: document.getElementById("estado").value
-    };
-
-    if (!p.fecha || !p.hora || !p.docente) {
+    
+    // Obtener valores del formulario
+    const citaId = document.getElementById("citaId").value;
+    const fecha = document.getElementById("fecha").value;
+    const hora = document.getElementById("hora").value;
+    const docente = document.getElementById("docente").value.trim().toUpperCase();
+    const email = document.getElementById("emailDocente").value.trim();
+    const curso = document.getElementById("curso").value;
+    const alumno = document.getElementById("alumno").value;
+    const apoderado = document.getElementById("apoderado").value;
+    const emailApoderado = document.getElementById("emailApoderado").value.trim();
+    const sala = document.getElementById("sala").value;
+    const estado = document.getElementById("estado").value;
+    
+    // Validación básica
+    if (!fecha || !hora || !docente) {
         alert("⚠️ Por favor completa Fecha, Hora y Docente.");
         return;
     }
 
     btn.disabled = true;
-    btn.innerText = "Procesando...";
+    btn.innerText = "Guardando...";
+    
+    console.log("Guardando cita con estado:", estado);
+    console.log("Email apoderado:", emailApoderado);
 
     try {
-        const response = await fetch(`${SHEET_URL}?${new URLSearchParams(p)}`);
+        // Construir parámetros
+        const params = new URLSearchParams({
+            action: citaId ? "edit" : "add",
+            fecha: fecha,
+            hora: hora,
+            docente: docente,
+            email: email,
+            tipo: "Email",
+            enviarEmail: "false",
+            curso: curso,
+            alumno: alumno,
+            apoderado: apoderado,
+            emailApoderado: emailApoderado,
+            sala: sala,
+            estado: estado
+        });
+        
+        // Si es edición, agregar el ID
+        if (citaId) {
+            params.append("id", citaId);
+        }
+        
+        console.log("Enviando petición:", `${SHEET_URL}?${params.toString()}`);
+        
+        const response = await fetch(`${SHEET_URL}?${params.toString()}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
+            }
+        });
+        
         const result = await response.json();
+        console.log("Respuesta del servidor:", result);
+        
         if (result.ok) {
-            alert("✅ ¡Éxito!");
+            alert("✅ Guardado exitosamente!");
             closeDialog();
+            
+            // Esperar un momento antes de recargar
+            await new Promise(resolve => setTimeout(resolve, 500));
+            
+            // Recargar datos desde el servidor
             await cargarDatos();
         } else {
-            alert("⚠️ " + (result.error || "Error"));
+            alert("⚠️ Error: " + (result.error || "No se pudo guardar"));
+            console.error("Error del servidor:", result);
         }
     } catch (e) {
-        alert("Actualizando datos...");
-        location.reload();
+        console.error("Error en guardar():", e);
+        alert("❌ Error de conexión. Recargando página...");
+        setTimeout(() => location.reload(), 1500);
     } finally {
         btn.disabled = false;
         btn.innerText = "Guardar";
@@ -219,22 +320,41 @@ async function reagendar() {
 function changeWeek(v){ currentDate.setDate(currentDate.getDate() + v*7); renderWeekView(); renderMiniCalendar(); }
 function changeMonth(v){ miniCalDate.setMonth(miniCalDate.getMonth() + v); renderMiniCalendar(); }
 
-// CORRECCIÓN: Función mejorada para evitar desfase de día
+// CORRECCIÓN: Función mejorada para evitar desfase de día en TODOS los meses
 function normalizarFecha(v){
     if (!v) return "";
-    let d = new Date(v);
     
-    // Si es un string YYYY-MM-DD lo usamos directo para no romper la zona horaria
-    if (typeof v === "string" && v.includes("-") && v.length <= 10) {
-        return v;
+    // Si es un string YYYY-MM-DD lo usamos directo (formato correcto)
+    if (typeof v === "string") {
+        let cleanStr = v.trim();
+        // Si ya está en formato YYYY-MM-DD, devolverlo tal cual
+        if (/^\d{4}-\d{2}-\d{2}$/.test(cleanStr)) {
+            return cleanStr;
+        }
+        // Si tiene formato YYYY-MM-DDTHH:mm, extraer solo la fecha
+        if (cleanStr.includes("T")) {
+            return cleanStr.split("T")[0];
+        }
     }
     
+    // Si es un objeto Date
+    if (v instanceof Date) {
+        if(isNaN(v.getTime())) return "";
+        
+        // Usar getUTCFullYear, getUTCMonth y getUTCDate para evitar problemas de zona horaria
+        let year = v.getUTCFullYear();
+        let month = (v.getUTCMonth() + 1).toString().padStart(2, '0');
+        let day = v.getUTCDate().toString().padStart(2, '0');
+        return `${year}-${month}-${day}`;
+    }
+    
+    // Intentar convertir a Date si no es string ni Date
+    let d = new Date(v);
     if(isNaN(d.getTime())) return "";
     
-    // Extraer componentes locales
-    let year = d.getFullYear();
-    let month = (d.getMonth() + 1).toString().padStart(2, '0');
-    let day = d.getDate().toString().padStart(2, '0');
+    let year = d.getUTCFullYear();
+    let month = (d.getUTCMonth() + 1).toString().padStart(2, '0');
+    let day = d.getUTCDate().toString().padStart(2, '0');
     return `${year}-${month}-${day}`;
 }
 
@@ -253,9 +373,15 @@ function renderMiniCalendar() {
     let days = new Date(y, m + 1, 0).getDate();
     for (let d = 1; d <= days; d++) {
         let div = document.createElement("div"); div.innerText = d;
+        // Crear fecha en formato YYYY-MM-DD directamente sin usar Date object
         let dStr = `${y}-${(m+1).toString().padStart(2,"0")}-${d.toString().padStart(2,"0")}`;
         if (new Date(y,m,d).getDay() === 0 || FERIADOS_2026.includes(dStr)) div.classList.add("holiday-mark");
-        div.onclick = () => { currentDate = new Date(y,m,d); renderWeekView(); renderMiniCalendar(); };
+        div.onclick = () => { 
+            // Crear fecha usando UTC para evitar desfases
+            currentDate = new Date(Date.UTC(y, m, d)); 
+            renderWeekView(); 
+            renderMiniCalendar(); 
+        };
         cont.appendChild(div);
     }
 }
