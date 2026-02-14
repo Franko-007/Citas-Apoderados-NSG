@@ -5,6 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Citas Liceo NSG</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Script de limpieza de duplicados ANTES de cargar todo -->
+    <script>
+        // Limpieza automática de duplicados
+        (function() {
+            if (window.limpiezaRealizada) return;
+            window.limpiezaRealizada = true;
+            
+            window.addEventListener('DOMContentLoaded', function() {
+                setTimeout(function() {
+                    const headers = document.querySelectorAll('.main-header');
+                    const containers = document.querySelectorAll('.app-container');
+                    
+                    console.log('Headers encontrados:', headers.length);
+                    console.log('Containers encontrados:', containers.length);
+                    
+                    // Si hay más de uno, eliminar los duplicados
+                    if (headers.length > 1) {
+                        console.warn('⚠️ Duplicados detectados, eliminando...');
+                        for (let i = 1; i < headers.length; i++) {
+                            if (headers[i].parentElement) {
+                                headers[i].parentElement.remove();
+                            }
+                        }
+                    }
+                    
+                    if (containers.length > 1) {
+                        for (let i = 1; i < containers.length; i++) {
+                            containers[i].remove();
+                        }
+                    }
+                }, 100);
+            });
+        })();
+    </script>
 </head>
 <body>
 
@@ -48,6 +82,10 @@
             <div class="leyenda-item">
                 <span class="leyenda-color no"></span>
                 <span>No asistió</span>
+            </div>
+            <div class="leyenda-item">
+                <span class="leyenda-color reagendada"></span>
+                <span>Reagendada</span>
             </div>
         </div>
     </aside>
@@ -127,6 +165,11 @@
         </div>
 
         <div class="form-group">
+            <label>Email Apoderado</label>
+            <input type="email" id="emailApoderado" placeholder="apoderado@gmail.com">
+        </div>
+
+        <div class="form-group">
             <label>Curso</label>
             <select id="curso">
                 <option value="">Seleccione curso</option>
@@ -153,8 +196,8 @@
 <datalist id="listaDocentes"></datalist>
 
 <footer class="main-footer">
-            <p>© 2026 NSG - Todos los derechos reservados | Desarrollado por <strong>Franco</strong></p>
-        </footer>
+    © NSG 2026 - Derechos Reservados - Desarrollado por Franco.
+</footer>
 
 <script src="script.js"></script>
 </body>
