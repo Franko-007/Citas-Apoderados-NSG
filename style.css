@@ -235,9 +235,11 @@ body {
   justify-content:center;
 }
 
-.event.asis { background:var(--green); }
-.event.pen  { background:var(--yellow); color:#000; }
-.event.no   { background:var(--red); }
+/* Colores según estado */
+.event.asis { background:#2fad4b; color:#fff; } /* Verde - Asistió */
+.event.pen  { background:#ffc107; color:#000; } /* Amarillo - Pendiente */
+.event.no   { background:#dc3545; color:#fff; } /* Rojo - No asistió */
+.event.reagendada { background:#858d94; color:#fff; } /* Gris - Reagendada */
 
 .ev-docente {
   font-weight:700;
@@ -319,6 +321,7 @@ body {
 .leyenda-color.asis { background:var(--green); }
 .leyenda-color.pen  { background:var(--yellow); }
 .leyenda-color.no   { background:var(--red); }
+.leyenda-color.reagendada { background:#6c757d; }
 
 /* ================= MODAL ================= */
 .modal-clean {
