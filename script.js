@@ -11,7 +11,7 @@ console.log("✅ Sistema de Gestión de Citas cargando correctamente");
 /*************************************************
  * CONFIGURACIÓN Y VARIABLES GLOBALES
  *************************************************/
-const SHEET_URL = "https://script.google.com/macros/s/AKfycbxWyTc8gn6x2shP2qcpik527PWH4r5_C_xDE9AQOXjHmA0BZ3gkhUQLZwWb-Xjj8cQ/exec";
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbw885U-jPEVBHJTIWxI3r1MSEMsaOeDTGdJOWvE0jxIWqclUn0LSSAji3-zsR_6SO8/exec";
 
 let DOCENTES_DATA = []; 
 let citas = [];
